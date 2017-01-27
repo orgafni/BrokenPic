@@ -23,13 +23,13 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/BrokenPicLogo"
-                    android:background="@drawable/BrokenPicLogoBg"
+                    android:src="@drawable/broken_pic_logo"
+                    android:background="@drawable/broken_pic_logo_bg"
                     />
                 <Button
                     android:id="@+id/NavigateBtn"
                     android:layout_width="wrap_content"
-                    android:text="< back"
+                    android:text="back"
                     android:textSize="15sp"
                     android:background="@color/colorGray"
                     android:fontFamily="sans-serif"
@@ -39,7 +39,7 @@
                     android:id="@+id/SettingsBtn"
                     android:layout_width="35dp"
                     android:layout_alignParentRight="true"
-                    android:src="@drawable/settingsBtn"
+                    android:src="@drawable/settings_btn"
                     android:layout_height="35dp" />
             </RelativeLayout>
 
