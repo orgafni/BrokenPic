@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.brokenpicinc.brokenpic.MainActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="100">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="20">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/BrokenPicLogo"
+                    android:background="@drawable/BrokenPicLogoBg"
+                    />
+                <Button
+                    android:id="@+id/NavigateBtn"
+                    android:layout_width="wrap_content"
+                    android:text="< back"
+                    android:textSize="15sp"
+                    android:background="@color/colorGray"
+                    android:fontFamily="sans-serif"
+                    android:layout_height="30dp" />
+                <!-- TODO: why wrap content not worked good? -->
+                <ImageButton
+                    android:id="@+id/SettingsBtn"
+                    android:layout_width="35dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/settingsBtn"
+                    android:layout_height="35dp" />
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/mainContainer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="80">
+
+            </FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>
