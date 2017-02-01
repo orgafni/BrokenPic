@@ -7,4 +7,6 @@
     <string name="signup_link">Don't have an account? Sign up!</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="nickname">Nick Name</string>
+    <string name="confirmPassword">Confirm Password</string>
 </resources>

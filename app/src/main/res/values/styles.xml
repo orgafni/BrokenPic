@@ -5,4 +5,10 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="PaddingTopStyle">
+        <item name="android:layout_marginTop">3dp</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+
 </resources>
