@@ -6,15 +6,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChooseGuessFragment extends Fragment {
+public class ChooseDrawFragment extends Fragment {
 
 
-    public ChooseGuessFragment() {
+    public ChooseDrawFragment() {
         // Required empty public constructor
     }
 
