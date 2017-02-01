@@ -19,6 +19,73 @@
             android:background="@drawable/broken_pic_logo_bg"
             />
 
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:weightSum="100">
+            <EditText
+                android:id="@+id/login_email_edittext"
+                android:layout_width="0dp"
+                android:layout_weight="75"
+                android:layout_height="wrap_content"
+                android:text="@string/email"
+                android:background="@color/colorWhite"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:weightSum="100">
+            <EditText
+                android:id="@+id/login_password_edittext"
+                android:layout_width="0dp"
+                android:layout_weight="75"
+                android:layout_height="wrap_content"
+                android:text="@string/password"
+                android:background="@color/colorWhite"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:weightSum="100">
+            <ImageButton
+                android:id="@+id/login_continue_btn"
+                android:layout_width="0dp"
+                android:layout_weight="75"
+                android:layout_height="wrap_content"
+                android:src="@drawable/continue_btn"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:weightSum="100">
+            <TextView
+                android:id="@+id/login_singup_link"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="75"
+                android:layout_height="wrap_content"
+                android:text="@string/signup_link"
+                android:clickable="true"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+
     </LinearLayout>
 
 
