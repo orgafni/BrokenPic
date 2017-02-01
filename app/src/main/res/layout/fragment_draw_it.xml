@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.brokenpicinc.brokenpic.GuessItFragment"
+    tools:context="com.brokenpicinc.brokenpic.DrawItFragment"
     android:background="@drawable/broken_pic_logo_bg">
 
     <LinearLayout
@@ -67,7 +67,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="50"
+            android:layout_weight="10"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="100">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="90"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:weightSum="100">
+
+                <TextView
+                    style="@style/PaddingTopStyle"
+                    android:id="@+id/word_to_draw_textview"
+                    android:layout_width="0dp"
+                    android:layout_weight="75"
+                    android:textSize="30dp"
+                    android:layout_height="match_parent"
+                    android:text="Word to guess"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="30"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
             android:weightSum="100">
@@ -90,42 +117,15 @@
                     />
             </LinearLayout>
         </LinearLayout>
-        <LinearLayout
+        <ImageButton
+            android:id="@+id/send_your_guess"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="20"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:weightSum="100">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="90"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:weightSum="100">
-
-                <EditText
-                    style="@style/PaddingTopStyle"
-                    android:id="@+id/your_guess_edittext"
-                    android:layout_width="0dp"
-                    android:layout_weight="75"
-                    android:layout_height="match_parent"
-                    android:text="@string/your_guess"
-                    android:background="@color/colorWhite"/>
-                <ImageButton
-                    android:id="@+id/send_your_guess"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="25"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:src="@drawable/send_btn"
-                    />
-
-            </LinearLayout>
-        </LinearLayout>
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/send_btn"
+            />
 
     </LinearLayout>
-
 </FrameLayout>
