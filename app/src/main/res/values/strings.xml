@@ -10,6 +10,8 @@
     <string name="nickname">Nick Name</string>
     <string name="confirmPassword">Confirm Password</string>
     <string name="type_your_word">Type your word here...</string>
+    <string name="drawer_intro">\ draw this picture, guess what is it!</string>
+    <string name="your_guess">Your Guess</string>
 
 
 </resources>

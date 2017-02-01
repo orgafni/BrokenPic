@@ -1,0 +1,131 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.brokenpicinc.brokenpic.GuessItFragment"
+    android:background="@drawable/broken_pic_logo_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="100">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:src="@drawable/your_turn_to_guess_new"
+            android:background="@drawable/broken_pic_logo_bg"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:weightSum="100">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="90"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:weightSum="100">
+
+                <ImageView
+                    android:id="@+id/drawer_image"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="15"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/upload_photo_btn"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="13dp"
+                    android:layout_gravity="center"
+                    android:text="shubi dubi"
+                    android:layout_weight="25"
+                    android:textAlignment="viewEnd"
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:id="@+id/drawer_name_textview"
+                    tools:ignore="RtlCompat" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="13dp"
+                    android:layout_gravity="center"
+                    android:text="@string/drawer_intro"
+                    android:layout_weight="60" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:weightSum="100">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="70"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:weightSum="100">
+
+                <ImageView
+                    android:id="@+id/pic_to_guess"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="15"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@mipmap/ic_launcher"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="100">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="90"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:weightSum="100">
+
+                <EditText
+                    style="@style/PaddingTopStyle"
+                    android:id="@+id/register_nickname_edittext"
+                    android:layout_width="0dp"
+                    android:layout_weight="75"
+                    android:layout_height="match_parent"
+                    android:text="@string/your_guess"
+                    android:background="@color/colorWhite"/>
+                <ImageButton
+                    android:id="@+id/send_your_guess"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/send_btn"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
