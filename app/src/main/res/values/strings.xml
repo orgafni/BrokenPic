@@ -9,4 +9,7 @@
     <string name="password">Password</string>
     <string name="nickname">Nick Name</string>
     <string name="confirmPassword">Confirm Password</string>
+    <string name="type_your_word">Type your word here...</string>
+
+
 </resources>
