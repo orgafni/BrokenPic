@@ -64,6 +64,7 @@
                 android:layout_weight="75"
                 android:layout_height="wrap_content"
                 android:src="@drawable/continue_btn"
+                android:background="@null"
                 />
         </LinearLayout>
 

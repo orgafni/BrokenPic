@@ -53,6 +53,7 @@
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:src="@drawable/clean_list_btn"
+                    android:background="@null"
                     />
                 <ImageButton
                     android:id="@+id/new_game_shuffle_btn"
@@ -62,6 +63,7 @@
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:src="@drawable/shuffle_list_btn"
+                    android:background="@null"
                     />
                 <ImageButton
                     android:id="@+id/new_game_start"
@@ -71,6 +73,7 @@
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:src="@drawable/start_game_btn"
+                    android:background="@null"
                     />
 
             </LinearLayout>

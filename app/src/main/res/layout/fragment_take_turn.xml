@@ -41,7 +41,9 @@
                     android:layout_weight="50"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
+                    android:layout_marginRight="2dp"
                     android:src="@drawable/guess_it_btn"
+                    android:background="@null"
                     />
                 <ImageButton
                     android:id="@+id/draw_it_btn"
@@ -49,9 +51,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="50"
                     android:scaleType="fitCenter"
-
                     android:adjustViewBounds="true"
                     android:src="@drawable/draw_it_btn"
+                    android:layout_marginLeft="2dp"
+                    android:background="@null"
                     />
 
             </LinearLayout>

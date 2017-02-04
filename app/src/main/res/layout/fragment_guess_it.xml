@@ -106,7 +106,6 @@
                 android:weightSum="100">
 
                 <EditText
-                    style="@style/PaddingTopStyle"
                     android:id="@+id/your_guess_edittext"
                     android:layout_width="0dp"
                     android:layout_weight="75"
@@ -116,10 +115,12 @@
                 <ImageButton
                     android:id="@+id/send_your_guess"
                     android:layout_width="0dp"
+                    android:background="@null"
                     android:layout_height="wrap_content"
                     android:layout_weight="25"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
+                    android:layout_marginLeft="2dp"
                     android:src="@drawable/send_btn"
                     />
 

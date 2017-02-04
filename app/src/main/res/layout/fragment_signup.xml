@@ -35,7 +35,7 @@
                 android:weightSum="100">
 
                 <LinearLayout
-                    android:layout_marginTop="2dp"
+
                     android:layout_width="0dp"
                     android:layout_weight="50"
                     android:layout_height="match_parent"
@@ -43,7 +43,7 @@
                     android:weightSum="100">
 
                     <EditText
-                        style="@style/PaddingTopStyle"
+
                         android:id="@+id/register_nickname_edittext"
                         android:layout_width="match_parent"
                         android:layout_weight="25"
@@ -84,11 +84,13 @@
                     android:orientation="vertical"
                     android:weightSum="100">
                     <ImageButton
+                        android:layout_marginLeft="2dp"
                         android:scaleType="fitCenter"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:adjustViewBounds="true"
                         android:src="@drawable/upload_photo_btn"
+                        android:background="@null"
                         />
                 </LinearLayout>
             </LinearLayout>
@@ -107,6 +109,7 @@
                 android:layout_weight="75"
                 android:layout_height="wrap_content"
                 android:src="@drawable/continue_btn"
+                android:background="@null"
                 />
         </LinearLayout>
         

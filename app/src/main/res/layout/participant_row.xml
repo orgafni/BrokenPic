@@ -43,7 +43,7 @@
             android:textSize="17dp"/>
 
         <ImageButton
-            android:background="@drawable/participant_row"
+            android:background="@null"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="25"

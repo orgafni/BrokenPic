@@ -22,7 +22,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="20"
+            android:layout_weight="15"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
             android:weightSum="100">
@@ -35,7 +35,7 @@
                 android:weightSum="100">
 
                 <ImageView
-                    android:id="@+id/drawer_image"
+                    android:id="@+id/writer_image"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="15"
@@ -43,6 +43,7 @@
                     android:adjustViewBounds="true"
                     android:src="@drawable/upload_photo_btn"
                     />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -53,14 +54,15 @@
                     android:textAlignment="viewEnd"
                     android:textStyle="bold"
                     android:singleLine="true"
-                    android:id="@+id/drawer_name_textview"
+                    android:id="@+id/writer_name_textview"
                     tools:ignore="RtlCompat" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textSize="13dp"
                     android:layout_gravity="center"
-                    android:text="@string/drawer_intro"
+                    android:text="@string/writer_intro"
                     android:layout_weight="60" />
             </LinearLayout>
         </LinearLayout>
@@ -84,6 +86,7 @@
                     android:id="@+id/word_to_draw_textview"
                     android:layout_width="0dp"
                     android:layout_weight="75"
+                    android:gravity="center"
                     android:textSize="30dp"
                     android:layout_height="match_parent"
                     android:text="Word to guess"
@@ -91,10 +94,11 @@
 
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="30"
+            android:layout_weight="55"
             android:orientation="horizontal"
             android:gravity="center_horizontal"
             android:weightSum="100">
@@ -106,23 +110,26 @@
                 android:gravity="center_horizontal"
                 android:weightSum="100">
 
-                <ImageView
-                    android:id="@+id/pic_to_guess"
+                <ImageButton
+                    android:id="@+id/your_pic_guess_imagebtn"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="15"
+                    android:background="@null"
                     android:scaleType="fitCenter"
                     android:adjustViewBounds="true"
                     android:src="@mipmap/ic_launcher"
                     />
             </LinearLayout>
         </LinearLayout>
+
         <ImageButton
-            android:id="@+id/send_your_guess"
+            android:id="@+id/send_your_draw"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="20"
+            android:layout_weight="10"
             android:scaleType="fitCenter"
+            android:background="@null"
+            android:layout_marginBottom="5dp"
             android:adjustViewBounds="true"
             android:src="@drawable/send_btn"
             />
