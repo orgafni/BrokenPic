@@ -11,7 +11,7 @@
     </style>
 
     <style name="MenuPaddingTopStyle">
-        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginTop">10dp</item>
         <!-- Customize your theme here. -->
     </style>
 

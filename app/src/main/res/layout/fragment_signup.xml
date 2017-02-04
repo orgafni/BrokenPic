@@ -84,6 +84,7 @@
                     android:orientation="vertical"
                     android:weightSum="100">
                     <ImageButton
+                        android:id="@+id/register_profile_photo_imagebtn"
                         android:layout_marginLeft="2dp"
                         android:scaleType="fitCenter"
                         android:layout_width="match_parent"
