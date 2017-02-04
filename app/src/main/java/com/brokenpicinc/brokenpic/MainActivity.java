@@ -1,6 +1,7 @@
 package com.brokenpicinc.brokenpic;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -24,6 +25,11 @@ public class MainActivity extends Activity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        final LoginFragment loginFragment = new LoginFragment();
+        FragmentTransaction ftr = getFragmentManager().beginTransaction();
+        ftr.add(R.id.mainContainer,loginFragment);
+        ftr.commit();
     }
 
     /**

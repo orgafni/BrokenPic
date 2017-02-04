@@ -2,11 +2,13 @@ package com.brokenpicinc.brokenpic;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 
 /**
@@ -24,7 +26,20 @@ public class MenuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_menu, container, false);
+        View view = inflater.inflate(R.layout.fragment_menu, container, false);
+
+        ImageButton startNewGameBtn = (ImageButton) view.findViewById(R.id.start_new_game_btn);
+        startNewGameBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final StartNewGameFragment startNewGameFragment = new StartNewGameFragment();
+                FragmentTransaction ftr = getFragmentManager().beginTransaction();
+                ftr.replace(R.id.mainContainer, startNewGameFragment);
+                ftr.commit();
+            }
+        });
+
+        return view;
     }
 
 }
