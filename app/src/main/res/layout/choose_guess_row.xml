@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:background="@drawable/participant_row"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+        <TextView
+            android:background="@drawable/participant_index_bg"
+            android:layout_width="0dp"
+            android:layout_weight="10"
+            android:layout_height="match_parent"
+            android:text="1"
+            android:id="@+id/row_guess_index"
+            android:gravity="center"
+            android:textSize="40dp"/>
+
+        <ImageView
+            android:id="@+id/row_guess_participante_image"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_weight="25"
+            android:src="@mipmap/ic_launcher"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="40"
+            android:layout_height="match_parent"
+            android:text="Peace And Love"
+            android:id="@+id/row_guess_phrase"
+            android:textColor="@color/colorRed"
+            android:gravity="center"
+            android:textSize="17dp"/>
+
+        <ImageButton
+            android:background="@null"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="25"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:src="@drawable/play_btn"
+            android:id="@+id/row_guess_play" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -65,13 +65,22 @@ public class StartNewGameFragment extends Fragment {
         });
 
         ImageButton startBtn = (ImageButton)view.findViewById(R.id.new_game_start);
-        cleanBtn.setOnClickListener(new View.OnClickListener() {
+        startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ChooseWordFragment chooseWordFragment = new ChooseWordFragment();
-                FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                ftr.replace(R.id.mainContainer,chooseWordFragment);
-                ftr.commit();
+                // Inforce that there are even players in the game (except me, the creator)
+                if (chosenPlayersList.size() %2 != 0)
+                {
+                    // TODO: add error dialog
+                }
+                else
+                {
+                    final ChooseWordFragment chooseWordFragment = new ChooseWordFragment();
+                    chooseWordFragment.SetChosenPlayers(chosenPlayersList);
+                    FragmentTransaction ftr = getFragmentManager().beginTransaction();
+                    ftr.replace(R.id.mainContainer, chooseWordFragment);
+                    ftr.commit();
+                }
             }
         });
 

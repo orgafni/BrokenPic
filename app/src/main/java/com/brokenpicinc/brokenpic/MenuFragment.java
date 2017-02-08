@@ -39,6 +39,17 @@ public class MenuFragment extends Fragment {
             }
         });
 
+        ImageButton takeYourTurnBtn = (ImageButton) view.findViewById(R.id.take_your_turn_btn);
+        takeYourTurnBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final TakeTurnFragment takeTurnFragment = new TakeTurnFragment();
+                FragmentTransaction ftr = getFragmentManager().beginTransaction();
+                ftr.replace(R.id.mainContainer, takeTurnFragment);
+                ftr.commit();
+            }
+        });
+
         return view;
     }
 

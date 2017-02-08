@@ -30,4 +30,11 @@ public class Model {
     public void addPlayer(Player item){
         players.add(item);
     }
+
+    public void createNewGame(String startWord, List<Player> playersList)
+    {
+        // TODO: add the game to the remote DB, include the start word and the players list. and me, the creator of the gmae!
+        // TODO: register this gameID to the pending games of the first player in the list
+    }
+
 }
