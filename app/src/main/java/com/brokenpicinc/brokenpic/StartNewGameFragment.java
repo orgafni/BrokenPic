@@ -2,8 +2,10 @@ package com.brokenpicinc.brokenpic;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import com.brokenpicinc.brokenpic.model.Model;
 import com.brokenpicinc.brokenpic.model.Player;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -29,6 +33,8 @@ import java.util.List;
 public class StartNewGameFragment extends Fragment {
     List<Player> playersList;
     LayoutInflater inf;
+
+    List<Player> chosenPlayersList;
 
 
     public StartNewGameFragment() {
@@ -43,22 +49,31 @@ public class StartNewGameFragment extends Fragment {
 
         inf = inflater;
         playersList = Model.getInstance().getAllPlayers();
+        chosenPlayersList = new LinkedList<Player>();
 
-        ListView list = (ListView) view.findViewById(R.id.particpantsListListView);
-        PlayersAdapter adapter = new PlayersAdapter(getActivity());
-//        StudentsAdapter adapter = new StudentsAdapter();
+        final ListView list = (ListView) view.findViewById(R.id.particpantsListListView);
+        final PlayersAdapter adapter = new PlayersAdapter(getActivity());
         list.setAdapter(adapter);
 
-//        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Log.d("TAG","row selected " + i);
-//                view.
-//                Intent intent = new Intent(getApplicationContext(),StudentDetailsActivity.class);
-//                intent.putExtra("id",studentsList.get(i).getId());
-//                startActivity(intent);
-//            }
-//        });
+        ImageButton cleanBtn = (ImageButton)view.findViewById(R.id.new_game_clean_btn);
+        cleanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chosenPlayersList.clear();
+                adapter.refershData();
+            }
+        });
+
+        ImageButton startBtn = (ImageButton)view.findViewById(R.id.new_game_start);
+        cleanBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ChooseWordFragment chooseWordFragment = new ChooseWordFragment();
+                FragmentTransaction ftr = getFragmentManager().beginTransaction();
+                ftr.replace(R.id.mainContainer,chooseWordFragment);
+                ftr.commit();
+            }
+        });
 
 
         return view;
@@ -93,55 +108,63 @@ public class StartNewGameFragment extends Fragment {
                 view = layoutInflater.inflate(R.layout.participant_row, null);
             }
 
-            Player pl = playersList.get(i);
-            TextView indexTv = (TextView) view.findViewById(R.id.row_participent_index);
-            TextView nameTv = (TextView) view.findViewById(R.id.row_participent_name);
-            ImageView imageView = (ImageView)view.findViewById(R.id.row_participent_image);
-            ImageButton addRemoveBtn = (ImageButton) view.findViewById(R.id.row_participent_add_remove);
+            final Player pl = playersList.get(i);
+            final TextView indexTv = (TextView) view.findViewById(R.id.row_participent_index);
+            final TextView nameTv = (TextView) view.findViewById(R.id.row_participent_name);
+            final ImageView imageView = (ImageView)view.findViewById(R.id.row_participent_image);
+            final ImageButton addRemoveBtn = (ImageButton) view.findViewById(R.id.row_participent_add_remove);
 
-//            indexTv.setText("?");
             nameTv.setText(pl.getNickname());
+            // Todo: set real user photo
             imageView.setImageResource(R.mipmap.ic_launcher);
-            addRemoveBtn.setImageResource(R.drawable.add_btn);
+
+
+            final int playerIndex = chosenPlayersList.indexOf(pl);
+            final String emptyIndex = " ";
+
+            // not in chosen list
+            if (playerIndex == -1)
+            {
+                indexTv.setText(emptyIndex);
+                addRemoveBtn.setImageResource(R.drawable.add_btn);
+            }
+            else
+            {
+                indexTv.setText(Integer.toString(playerIndex + 1));
+                addRemoveBtn.setImageResource(R.drawable.remove_part);
+            }
+
+            addRemoveBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Add to chosen list
+                    if (playerIndex == -1)
+                    {
+                        //addRemoveBtn.setImageResource(R.drawable.remove_part);
+                        chosenPlayersList.add(pl);
+                        //indexTv.setText(chosenPlayersList.size());
+                    }
+                    else
+                    {
+                        //addRemoveBtn.setImageResource(R.drawable.add_btn);
+                        chosenPlayersList.remove(pl);
+                        //indexTv.setText(emptyIndex);
+                    }
+                    refershData();
+                }
+            });
 
             Log.d("TAG", "presenting row: " + i);
             return view;
         }
-    }
-
-    class StudentsAdapter extends BaseAdapter{
-
-        @Override
-        public int getCount() {
-            return playersList.size();
+        public final void refershData()
+        {
+            final ListView list = (ListView) getActivity().findViewById(R.id.particpantsListListView);
+            ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
         }
 
-        @Override
-        public Object getItem(int i) {
-            return playersList.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
-
-        @Override
-        public View getView(final int i, View view, ViewGroup viewGroup) {
-            if (view == null){
-                view = inf.inflate(R.layout.students_list_row_del,null);
-
-            }
-
-            Player st = playersList.get(i);
-            TextView nameTv = (TextView) view.findViewById(R.id.studentRowName);
-            TextView idTv = (TextView) view.findViewById(R.id.studentRowId);
-            nameTv.setText(st.getNickname());
-            CheckBox cb = (CheckBox) view.findViewById(R.id.studentRowCheckBox);
-            cb.setTag(new Integer(i));
-            Log.d("TAG","presenting row: " + i);
-            return view;
-        }
     }
 
 }
+
+
