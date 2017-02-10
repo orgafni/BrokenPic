@@ -2,6 +2,7 @@ package com.brokenpicinc.brokenpic;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,10 +25,7 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class ChooseDrawFragment extends Fragment {
-
-    LayoutInflater inf;
-    List<GuessGame> gamesToGuess;
-
+    List<GuessGame> gamesToGuessList;
 
     public ChooseDrawFragment() {
         // Required empty public constructor
@@ -39,9 +37,12 @@ public class ChooseDrawFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_choose_game, container, false);
-        inf = inflater;
 
-        gamesToGuess = Model.getInstance().getGamesToGuess();
+        gamesToGuessList = Model.getInstance().getGamesToGuess();
+
+        final ListView list = (ListView) view.findViewById(R.id.GamesToGuessListView);
+        final DrawsAdapter adapter = new DrawsAdapter(getActivity());
+        list.setAdapter(adapter);
 
         return view;
     }
@@ -51,17 +52,17 @@ public class ChooseDrawFragment extends Fragment {
         private LayoutInflater layoutInflater;
 
         public DrawsAdapter(Context context) {
-            layoutInflater = inf;
+            layoutInflater = LayoutInflater.from(context);
         }
 
         @Override
         public int getCount() {
-            return playersList.size();
+            return gamesToGuessList.size();
         }
 
         @Override
         public Object getItem(int i) {
-            return playersList.get(i);
+            return gamesToGuessList.get(i);
         }
 
         @Override
@@ -72,63 +73,39 @@ public class ChooseDrawFragment extends Fragment {
         @Override
         public View getView(final int i, View view, ViewGroup viewGroup) {
             if (view == null) {
-                view = layoutInflater.inflate(R.layout.participant_row, null);
+                view = layoutInflater.inflate(R.layout.choose_draw_row, null);
             }
 
-            final Player pl = playersList.get(i);
-            final TextView indexTv = (TextView) view.findViewById(R.id.row_participent_index);
-            final TextView nameTv = (TextView) view.findViewById(R.id.row_participent_name);
-            final ImageView imageView = (ImageView)view.findViewById(R.id.row_participent_image);
-            final ImageButton addRemoveBtn = (ImageButton) view.findViewById(R.id.row_participent_add_remove);
+            final GuessGame game = gamesToGuessList.get(i);
+            final TextView indexTv = (TextView) view.findViewById(R.id.row_draw_index);
+            final ImageView participentImageView = (ImageView)view.findViewById(R.id.row_draw_participante_image);
+            final ImageView imageView = (ImageView)view.findViewById(R.id.row_draw_image);
+            final ImageButton playBtn = (ImageButton) view.findViewById(R.id.row_draw_play);
 
-            nameTv.setText(pl.getNickname());
+
+            indexTv.setText(Integer.toString(i));
             // Todo: set real user photo
+            participentImageView.setImageResource(R.mipmap.ic_launcher);
+            // Todo: set real draw picture
             imageView.setImageResource(R.mipmap.ic_launcher);
+            playBtn.setImageResource(R.drawable.play_btn);;
 
-
-            final int playerIndex = chosenPlayersList.indexOf(pl);
-            final String emptyIndex = " ";
-
-            // not in chosen list
-            if (playerIndex == -1)
-            {
-                indexTv.setText(emptyIndex);
-                addRemoveBtn.setImageResource(R.drawable.add_btn);
-            }
-            else
-            {
-                indexTv.setText(Integer.toString(playerIndex + 1));
-                addRemoveBtn.setImageResource(R.drawable.remove_part);
-            }
-
-            addRemoveBtn.setOnClickListener(new View.OnClickListener() {
+            playBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Add to chosen list
-                    if (playerIndex == -1)
-                    {
-                        //addRemoveBtn.setImageResource(R.drawable.remove_part);
-                        chosenPlayersList.add(pl);
-                        //indexTv.setText(chosenPlayersList.size());
-                    }
-                    else
-                    {
-                        //addRemoveBtn.setImageResource(R.drawable.add_btn);
-                        chosenPlayersList.remove(pl);
-                        //indexTv.setText(emptyIndex);
-                    }
-                    refershData();
+                    GuessItFragment guessItFragment = new GuessItFragment();
+                    guessItFragment.setChosenGame(game);
+                    FragmentTransaction ftr = getFragmentManager().beginTransaction();
+                    ftr.replace(R.id.mainContainer,guessItFragment);
+                    ftr.commit();
                 }
             });
 
-            Log.d("TAG", "presenting row: " + i);
+            Log.d("TAG", "presenting draw row: " + i);
             return view;
         }
-        public final void refershData()
-        {
-            final ListView list = (ListView) getActivity().findViewById(R.id.particpantsListListView);
-            ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
-        }
+
+
 
     }
 

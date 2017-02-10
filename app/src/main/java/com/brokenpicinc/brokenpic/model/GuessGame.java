@@ -5,30 +5,20 @@ package com.brokenpicinc.brokenpic.model;
  */
 
 public class GuessGame {
-    String drawerName;
-    String drawerProfilePhotoPath;
+    Player drawerPlayer;
     String imageToGuessPath;
 
-    public GuessGame(String drawerName, String imageToGuessPath, String drawerProfilePhotoPath) {
-        this.drawerName = drawerName;
+    public GuessGame(Player drawerPlayer, String imageToGuessPath) {
+        this.drawerPlayer = drawerPlayer;
         this.imageToGuessPath = imageToGuessPath;
-        this.drawerProfilePhotoPath = drawerProfilePhotoPath;
     }
 
     public String getDrawerName() {
-        return drawerName;
-    }
-
-    public void setDrawerName(String drawerName) {
-        this.drawerName = drawerName;
+        return this.drawerPlayer.getNickname();
     }
 
     public String getDrawerProfilePhotoPath() {
-        return drawerProfilePhotoPath;
-    }
-
-    public void setDrawerProfilePhotoPath(String drawerProfilePhotoPath) {
-        this.drawerProfilePhotoPath = drawerProfilePhotoPath;
+        return this.drawerPlayer.getProfilePhotoPath();
     }
 
     public String getImageToGuessPath() {

@@ -32,7 +32,6 @@ import java.util.List;
  */
 public class StartNewGameFragment extends Fragment {
     List<Player> playersList;
-    LayoutInflater inf;
 
     List<Player> chosenPlayersList;
 
@@ -47,7 +46,6 @@ public class StartNewGameFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_start_new_game, container, false);
 
-        inf = inflater;
         playersList = Model.getInstance().getAllPlayers();
         chosenPlayersList = new LinkedList<Player>();
 
@@ -93,7 +91,7 @@ public class StartNewGameFragment extends Fragment {
         private LayoutInflater layoutInflater;
 
         public PlayersAdapter(Context context) {
-            layoutInflater = inf;
+            layoutInflater = LayoutInflater.from(context);
         }
 
         @Override

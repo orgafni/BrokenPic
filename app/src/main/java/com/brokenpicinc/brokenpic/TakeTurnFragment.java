@@ -31,9 +31,9 @@ public class TakeTurnFragment extends Fragment {
         guessItBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ChooseGuessFragment chooseGuessFragment = new ChooseGuessFragment();
+                final ChooseDrawFragment chooseDrawFragment = new ChooseDrawFragment();
                 FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                ftr.replace(R.id.mainContainer, chooseGuessFragment);
+                ftr.replace(R.id.mainContainer, chooseDrawFragment);
                 ftr.commit();
             }
         });
@@ -42,9 +42,9 @@ public class TakeTurnFragment extends Fragment {
         drawItBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final ChooseDrawFragment chooseDrawFragment = new ChooseDrawFragment();
+                final ChooseGuessFragment chooseGuessFragment = new ChooseGuessFragment();
                 FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                ftr.replace(R.id.mainContainer, chooseDrawFragment);
+                ftr.replace(R.id.mainContainer, chooseGuessFragment);
                 ftr.commit();
             }
         });
