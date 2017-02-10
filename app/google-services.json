@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "920095240408",
+    "firebase_url": "https://brokenpic-cff37.firebaseio.com",
+    "project_id": "brokenpic-cff37",
+    "storage_bucket": "brokenpic-cff37.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920095240408:android:4d45b69e49ac80c5",
+        "android_client_info": {
+          "package_name": "com.brokenpicinc.brokenpic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "920095240408-9649k3vk0hbom7qp6q5ag62g8mmqrek8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAs_SQGAIa85koeV5GbVXnNPzhDv2Z314s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "920095240408-9649k3vk0hbom7qp6q5ag62g8mmqrek8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
