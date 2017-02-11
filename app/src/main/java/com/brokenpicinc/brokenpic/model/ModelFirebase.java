@@ -32,7 +32,7 @@ public class ModelFirebase {
         public void onFail();
     }
 
-    public void registerUser(String nickName, String email, String password, final RegisterUserListener listener)
+    public void registerUser(final String nickName, String email, String password, final RegisterUserListener listener)
     {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -48,7 +48,10 @@ public class ModelFirebase {
                     currentUser =  mAuth.getCurrentUser();
                     Log.d(TAG, "success get user: uid: " + currentUser.getUid()+ " displayName: " + currentUser.getDisplayName() + " email" + currentUser.getEmail());
 
+                    database.getReference("Players").child(currentUser.getUid()).child("image").setValue("None so far");
+                    database.getReference("Players").child(currentUser.getUid()).child("name").setValue(nickName);
 
+                    database.getReference("playerGames").child(currentUser.getUid()).child("finished");
                     listener.onSuccess();
 
                 }
