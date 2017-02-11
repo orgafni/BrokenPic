@@ -9,12 +9,16 @@ import java.util.List;
 
 public class Model {
     private final static Model instance = new Model();
+    ModelFirebase modelFirebase;
+
 
     private List<Player> players = new LinkedList<Player>();
     private List<GuessGame> gamesToGuess = new LinkedList<GuessGame>();
     private List<DrawGame> gamesToDraw = new LinkedList<DrawGame>();
 
     private Model(){
+        modelFirebase = new ModelFirebase();
+
         for (int i =0;i<15;i++){
             Player pl = new Player("myEmail" + i + "@gmail.com", "myNick " + i,"pass" + (i+1) * 3, "/images/myProfile" + i);
             addPlayer(pl);
@@ -71,6 +75,12 @@ public class Model {
         // TODO: find the game received in the DB, set the received draw as the current player draw.
         // TODO: remove the game from this player pending games.
         // TODO: register the gameID to the pending game of the next player.
+    }
+
+    public Boolean registerNewUser(String nickname, String email, String pass, ModelFirebase.RegisterUserListener listener)
+    {
+        modelFirebase.registerUser(nickname, email, pass, listener);
+        return true;
     }
 
 }

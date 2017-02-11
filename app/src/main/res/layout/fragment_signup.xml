@@ -48,7 +48,8 @@
                         android:layout_width="match_parent"
                         android:layout_weight="25"
                         android:layout_height="0dp"
-                        android:text="@string/nickname"
+                        android:hint="@string/nickname"
+                        android:text=""
                         android:background="@color/colorWhite"/>
 
                     <EditText
@@ -57,7 +58,8 @@
                         android:layout_width="match_parent"
                         android:layout_weight="25"
                         android:layout_height="0dp"
-                        android:text="@string/email"
+                        android:hint="@string/email"
+                        android:text=""
                         android:background="@color/colorWhite"/>
                     <EditText
                         style="@style/PaddingTopStyle"
@@ -65,7 +67,8 @@
                         android:layout_width="match_parent"
                         android:layout_weight="25"
                         android:layout_height="0dp"
-                        android:text="@string/password"
+                        android:hint="@string/password"
+                        android:text=""
                         android:background="@color/colorWhite"/>
                     <EditText
                         style="@style/PaddingTopStyle"
@@ -73,7 +76,8 @@
                         android:layout_width="match_parent"
                         android:layout_weight="25"
                         android:layout_height="0dp"
-                        android:text="@string/confirmPassword"
+                        android:hint="@string/confirmPassword"
+                        android:text=""
                         android:background="@color/colorWhite"/>
 
                 </LinearLayout>
