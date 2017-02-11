@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
 
 /**
  * Created by orgaf_000 on 2/4/2017.
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class ModelFirebase {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
     final private String TAG = "ModelFirebase";
     FirebaseUser currentUser;
 
