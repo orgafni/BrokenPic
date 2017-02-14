@@ -1,9 +1,16 @@
 package com.brokenpicinc.brokenpic;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +20,19 @@ import android.widget.ImageButton;
 
 import com.brokenpicinc.brokenpic.model.Model;
 import com.brokenpicinc.brokenpic.model.ModelFirebase;
+import com.mvc.imagepicker.ImagePicker;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SignupFragment extends Fragment {
-
+    final int TAKE_PICTURE = 0;
+    final int CHOOSE_FROM_GALLERY = 1;
+    ImageButton profileImageBtn;
 
     public SignupFragment() {
         // Required empty public constructor
@@ -31,6 +44,20 @@ public class SignupFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_signup, container, false);
+
+        profileImageBtn = (ImageButton)view.findViewById(R.id.register_profile_photo_imagebtn);
+        profileImageBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                ImagePicker.pickImage(getActivity(), "choose your image bro!");
+                Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(takePicture, TAKE_PICTURE);//zero can be replaced with any action code
+
+//                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(pickPhoto , CHOOSE_FROM_GALLERY);//one can be replaced with any action code
+            }
+        });
 
         ImageButton signupContinueBtn = (ImageButton)view.findViewById(R.id.register_continue_btn);
         signupContinueBtn.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +97,56 @@ public class SignupFragment extends Fragment {
         });
 
         return view;
+    }
+
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        Bitmap gotImage = ImagePicker.getImageFromResult(getActivity(), requestCode, resultCode, data);
+//        profileImageBtn.setImageBitmap(gotImage);
+//
+////        Bitmap bitmap = ImagePicker.getImageFromResult(this, requestCode, resultCode, data);
+//        // TODO do something with the bitmap
+//    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        switch(requestCode) {
+            case TAKE_PICTURE:
+                if(resultCode == Activity.RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    Bitmap photo = (Bitmap) imageReturnedIntent.getExtras().get("data");
+//                    Log.d("TAG", "selectedImage " + selectedImage.getPath());
+                    profileImageBtn.setImageBitmap(photo);
+
+                    // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
+                    Uri tempUri = getImageUri(getActivity().getApplicationContext(), photo);
+                    // CALL THIS METHOD TO GET THE ACTUAL PATH
+                    File finalFile = new File(getRealPathFromURI(tempUri));
+
+                }
+
+                break;
+            case CHOOSE_FROM_GALLERY:
+                if(resultCode == Activity.RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    profileImageBtn.setImageURI(selectedImage);
+                }
+                break;
+        }
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri uri) {
+        Cursor cursor = getActivity().getApplicationContext().getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+        return cursor.getString(idx);
     }
 
 }
