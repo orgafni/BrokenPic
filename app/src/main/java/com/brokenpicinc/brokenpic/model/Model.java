@@ -33,6 +33,11 @@ public class Model {
         public void onCancel(String msg);
     }
 
+    public interface GetAllGamesToDrawListener{
+        public void onResult(List<playerInGame> games);
+        public void onCancel(String msg);
+    }
+
     public interface GetImageListener{
         void onSuccess(Bitmap image);
         void onFail();
@@ -40,21 +45,6 @@ public class Model {
 
     private Model(){
         modelFirebase = new ModelFirebase();
-
-//        for (int i =0;i<15;i++){
-//            Player pl = new Player("myEmail" + i + "@gmail.com", "myNick " + i,"pass" + (i+1) * 3, "/images/myProfile" + i);
-//            addPlayer(pl);
-//        }
-
-//        for (int i =0;i<12;i++){
-//            GuessGame game = new GuessGame(players.get(i), "/images/drawPhoto" + i);
-//            addGameToGuess(game);
-//        }
-//
-//        for (int i =0;i<12;i++){
-//            DrawGame game = new DrawGame(players.get(i), "myWord " + i);
-//            addGameToDraw(game);
-//        }
     }
 
     public static Model getInstance(){
@@ -65,8 +55,12 @@ public class Model {
         modelFirebase.getAllPlayersAsync(listener);
     }
 
-    public List<GuessGame> getGamesToGuess(){ return gamesToGuess; }
-    public List<DrawGame> getGamesToDraw(){ return gamesToDraw; }
+    public List<GuessGame> getGamesToGuess(){
+        return gamesToGuess; }
+
+    public List<DrawGame> getGamesToDraw(GetAllGamesToDrawListener listener){
+        modelFirebase.getAllGamesToDrawAsync(listener);
+    }
 
     public void addPlayer(Player item){
         players.add(item);

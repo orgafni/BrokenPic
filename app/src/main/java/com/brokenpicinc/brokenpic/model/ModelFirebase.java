@@ -43,6 +43,11 @@ public class ModelFirebase {
 //        mAuth = FirebaseAuth.getInstance();
 //    }
 
+    public interface GetMyTurnListener{
+        void onSuccess(playerInGame res);
+        void onFail();
+    }
+
     public void registerUser(final String nickName, String email, String password, final Bitmap profilePhoto, final Model.RegisterUserListener listener)
     {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -140,6 +145,82 @@ public class ModelFirebase {
             }
         });
     }
+
+    public void getAllGamesToDrawAsync(final Model.GetAllGamesToDrawListener listener){
+
+        DatabaseReference myRef = database.getReference("playerGames").child(getCurrentUserID()).child("pendig");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<playerInGame> gameList = new LinkedList<playerInGame>();
+                for (DataSnapshot plSnapshot : dataSnapshot.getChildren()) {
+                    String gameID = plSnapshot.getKey();
+                    getMyTurnToGuessByGameID(gameID, new GetMyTurnListener() {
+                        @Override
+                        public void onSuccess(playerInGame res) {
+                            gameList.add(res);
+                        }
+
+                        @Override
+                        public void onFail() {
+
+                        }
+                    });
+                }
+                listener.onResult(plList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onCancel("Connection error");
+            }
+        });
+    }
+
+    final private void getMyTurnToGuessByGameID(final String gameID, final GetMyTurnListener listener)
+    {
+        DatabaseReference myRef = database.getReference("Games").child(gameID).child("nextTurnIndex");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int nextTurnIndex = dataSnapshot.getValue(Integer.class);
+                if (nextTurnIndex % 2 == 1)
+                {
+                    DatabaseReference wordRef = database.getReference("Games").child(gameID).child("playersInGame").child(Integer.toString(nextTurnIndex - 1));
+                    wordRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            playerInGame myTurn = new playerInGame();
+                            for (DataSnapshot plSnapshot : dataSnapshot.getChildren()) {
+                                if (plSnapshot.getKey().equals("playerID"))
+                                {
+                                    myTurn.setPlayerID(plSnapshot.getValue(String.class));
+                                }
+                                else if(plSnapshot.getKey().equals("word"))
+                                {
+                                    myTurn.setWord(plSnapshot.getValue(String.class));
+                                }
+                            }
+                            listener.onSuccess(myTurn);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+
+
 
     public void getImage(String url, final Model.GetImageListener listener){
         StorageReference httpsReference = storage.getReferenceFromUrl(storageURL).child(url);
