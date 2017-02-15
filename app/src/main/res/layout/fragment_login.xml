@@ -31,7 +31,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="75"
                 android:layout_height="wrap_content"
-                android:text="@string/email"
+                android:hint="@string/email"
+                android:text=""
                 android:background="@color/colorWhite"/>
         </LinearLayout>
 
@@ -47,7 +48,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="75"
                 android:layout_height="wrap_content"
-                android:text="@string/password"
+                android:hint="@string/password"
+                android:text=""
                 android:background="@color/colorWhite"/>
         </LinearLayout>
 

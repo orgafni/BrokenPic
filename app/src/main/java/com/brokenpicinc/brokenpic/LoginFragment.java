@@ -11,6 +11,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.brokenpicinc.brokenpic.model.Model;
+import com.brokenpicinc.brokenpic.model.ModelFirebase;
+
 import org.w3c.dom.Text;
 
 
@@ -35,15 +38,28 @@ public class LoginFragment extends Fragment {
         loginContinueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = ((EditText)view.findViewById(R.id.login_email_edittext)).getText().toString();
-                String password = ((EditText)view.findViewById(R.id.login_password_edittext)).getText().toString();
+                final EditText emailEditText = ((EditText) view.findViewById(R.id.login_email_edittext));
+                final EditText passwordEditText = ((EditText) view.findViewById(R.id.login_password_edittext));
+                String email = emailEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
 
                 // TODO: verify that email and password correct (use Model or Firebase)
+                Model.getInstance().loginNewUser(email, password, new ModelFirebase.LoginUserListener() {
+                    @Override
+                    public void onSuccess() {
+                        final MenuFragment menuFragment = new MenuFragment();
+                        FragmentTransaction ftr = getFragmentManager().beginTransaction();
+                        ftr.replace(R.id.mainContainer, menuFragment);
+                        ftr.commit();
+                    }
 
-                final MenuFragment menuFragment = new MenuFragment();
-                FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                ftr.replace(R.id.mainContainer,menuFragment);
-                ftr.commit();
+                    @Override
+                    public void onFail() {
+                        emailEditText.setText("");
+                        passwordEditText.setText("");
+                    }
+
+                });
             }
         });
 

@@ -1,5 +1,7 @@
 package com.brokenpicinc.brokenpic.model;
 
+import android.graphics.Bitmap;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -77,9 +79,15 @@ public class Model {
         // TODO: register the gameID to the pending game of the next player.
     }
 
-    public Boolean registerNewUser(String nickname, String email, String pass, ModelFirebase.RegisterUserListener listener)
+    public Boolean registerNewUser(String nickname, String email, String pass, Bitmap profilePhoto, ModelFirebase.RegisterUserListener listener)
     {
-        modelFirebase.registerUser(nickname, email, pass, listener);
+        modelFirebase.registerUser(nickname, email, pass, profilePhoto, listener);
+        return true;
+    }
+
+    public Boolean loginNewUser(String email, String pass, ModelFirebase.LoginUserListener listener)
+    {
+        modelFirebase.loginUser(email, pass, listener);
         return true;
     }
 

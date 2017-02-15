@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -33,6 +34,7 @@ public class SignupFragment extends Fragment {
     final int TAKE_PICTURE = 0;
     final int CHOOSE_FROM_GALLERY = 1;
     ImageButton profileImageBtn;
+    final boolean isProfileLoaded = false;
 
     public SignupFragment() {
         // Required empty public constructor
@@ -53,7 +55,7 @@ public class SignupFragment extends Fragment {
                 Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(takePicture, TAKE_PICTURE);//zero can be replaced with any action code
 
-//                Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+//                Intent pickPhoto = new Intent(Intent.ACIOTN_PICK,
 //                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 //                startActivityForResult(pickPhoto , CHOOSE_FROM_GALLERY);//one can be replaced with any action code
             }
@@ -73,9 +75,10 @@ public class SignupFragment extends Fragment {
                 final String email = emailEditText.getText().toString();
                 final String password = passwordEditText.getText().toString();
                 final String confirmPassword = confirmPasswordEditText.getText().toString();
-//                String profilePhoto = ((ImageButton)view.findViewById(R.id.register_profile_photo_imagebtn)).getResour
+                ImageButton profilePhotoBtn = ((ImageButton)view.findViewById(R.id.register_profile_photo_imagebtn));
+                Bitmap profilePhoto = ((BitmapDrawable)profilePhotoBtn.getDrawable()).getBitmap();
                 // TODO: verify that email is not exists on Model (or firebase), verify passwords are equal, and register user Model (or firebase)
-                Model.getInstance().registerNewUser(nickname, email, password, new ModelFirebase.RegisterUserListener() {
+                Model.getInstance().registerNewUser(nickname, email, password, profilePhoto, new ModelFirebase.RegisterUserListener() {
                     @Override
                     public void onSuccess() {
                         final MenuFragment menuFragment = new MenuFragment();
@@ -120,6 +123,7 @@ public class SignupFragment extends Fragment {
 
                     // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
                     Uri tempUri = getImageUri(getActivity().getApplicationContext(), photo);
+                    Log.d("TAG", "tempUri " + tempUri.getPath());
                     // CALL THIS METHOD TO GET THE ACTUAL PATH
                     File finalFile = new File(getRealPathFromURI(tempUri));
 
