@@ -124,8 +124,12 @@ public class ModelFirebase {
                 final List<Player> plList = new LinkedList<Player>();
                 for (DataSnapshot plSnapshot : dataSnapshot.getChildren()) {
                     Player pl = plSnapshot.getValue(Player.class);
+                    pl.setUniqueID(plSnapshot.getKey());
                     Log.d(TAG, pl.getName() + " - " + pl.getImage());
-                    plList.add(pl);
+                    if (!pl.getUniqueID().equals(currentUser.getUid()))
+                    {
+                        plList.add(pl);
+                    }
                 }
                 listener.onResult(plList);
             }
@@ -158,5 +162,21 @@ public class ModelFirebase {
 
     }
 
+    public String addGame(Game newGame)
+    {
+        DatabaseReference myRef = database.getReference("Games").push();
+        myRef.setValue(newGame);
 
+        return myRef.getKey();
+    }
+
+    public String getCurrentUserID()
+    {
+        return currentUser.getUid();
+    }
+
+    public void addGameToPendingListOfPlayer(String gameID, String playerID)
+    {
+        database.getReference("playerGames").child(playerID).child("pending").child(gameID).setValue(true);
+    }
 }

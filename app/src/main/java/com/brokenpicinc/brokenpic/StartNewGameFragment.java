@@ -70,9 +70,9 @@ public class StartNewGameFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Inforce that there are even players in the game (except me, the creator)
-                if (chosenPlayersList.size() %2 != 0)
+                if (chosenPlayersList.size() % 2 != 0 || chosenPlayersList.size() == 0)
                 {
-                    // TODO: add error dialog
+                    DialogInterrupter.showNeturalDialog("Invalid amount players chosen", getActivity());
                 }
                 else
                 {

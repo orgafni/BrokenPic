@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 
 import com.brokenpicinc.brokenpic.model.Model;
 import com.brokenpicinc.brokenpic.model.Player;
+import com.brokenpicinc.brokenpic.utils.DialogInterrupter;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class ChooseWordFragment extends Fragment {
                 String chosenWord = chosenWordEditText.getText().toString();
                 if (chosenWord.isEmpty())
                 {
-                    // TODO: alert
+                    DialogInterrupter.showNeturalDialog("Please enter a word", getActivity());
                 }
                 else
                 {

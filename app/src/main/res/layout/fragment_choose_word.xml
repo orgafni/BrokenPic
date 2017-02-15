@@ -32,7 +32,8 @@
                 android:background="@color/colorWhite"
                 android:textSize="25dp"
                 android:layout_gravity="center"
-                android:text="@string/type_your_word"
+                android:hint="@string/type_your_word"
+                android:text=""
                 android:layout_weight="80"
                 android:id="@+id/chosen_word_edittext"/>
         </LinearLayout>

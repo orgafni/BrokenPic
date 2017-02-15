@@ -7,6 +7,7 @@ package com.brokenpicinc.brokenpic.model;
 public class Player {
     String name;
     String image;
+    String uniqueID;
 
     public Player() {
     }
@@ -30,5 +31,13 @@ public class Player {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getUniqueID() {
+        return uniqueID;
+    }
+
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
     }
 }

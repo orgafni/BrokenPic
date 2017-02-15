@@ -81,7 +81,15 @@ public class Model {
     public void createNewGame(String startWord, List<Player> playersList)
     {
         // TODO: add the game to the remote DB, include the start word and the players list. and me, the creator of the gmae!
-        // TODO: register this gameID to the pending games of the first player in the list
+        Player currPlayer = new Player();
+        currPlayer.setUniqueID(modelFirebase.getCurrentUserID());
+        playersList.add(0, currPlayer);
+        Game newGame = new Game(startWord, playersList);
+        String gameID = modelFirebase.addGame(newGame);
+
+        // TODO: register this gameID to the pending games of the second player in the list
+        modelFirebase.addGameToPendingListOfPlayer(gameID, playersList.get(1).getUniqueID());
+
     }
 
     public void advanceGame(GuessGame game, String guessWord)
