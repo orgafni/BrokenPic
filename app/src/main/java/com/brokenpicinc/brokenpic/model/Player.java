@@ -5,47 +5,30 @@ package com.brokenpicinc.brokenpic.model;
  */
 
 public class Player {
-    String email;
-    String nickname;
-    String profilePhotoPath;
-    String password;
+    String name;
+    String image;
 
-    public Player(String email, String nickname, String profilePhotoPath, String password) {
-        this.email = email;
-        this.nickname = nickname;
-        this.profilePhotoPath = profilePhotoPath;
-        this.password = password;
+    public Player() {
     }
 
-    public String getEmail() {
-        return email;
+    public Player(String nickname, String profilePhotoPath) {
+        this.name = nickname;
+        this.image = profilePhotoPath;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getName() {
+        return name;
     }
 
-    public String getNickname() {
-        return nickname;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public String getImage() {
+        return image;
     }
 
-    public String getProfilePhotoPath() {
-        return profilePhotoPath;
-    }
-
-    public void setProfilePhotoPath(String profilePhotoPath) {
-        this.profilePhotoPath = profilePhotoPath;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

@@ -18,31 +18,51 @@ public class Model {
     private List<GuessGame> gamesToGuess = new LinkedList<GuessGame>();
     private List<DrawGame> gamesToDraw = new LinkedList<DrawGame>();
 
+    public interface RegisterUserListener{
+        public void onSuccess();
+        public void onFail(String msg);
+    }
+
+    public interface LoginUserListener{
+        public void onSuccess();
+        public void onFail(String msg);
+    }
+
+    public interface GetAllPlayersListener{
+        public void onResult(List<Player> players);
+        public void onCancel(String msg);
+    }
+
+    public interface GetImageListener{
+        void onSuccess(Bitmap image);
+        void onFail();
+    }
+
     private Model(){
         modelFirebase = new ModelFirebase();
 
-        for (int i =0;i<15;i++){
-            Player pl = new Player("myEmail" + i + "@gmail.com", "myNick " + i,"pass" + (i+1) * 3, "/images/myProfile" + i);
-            addPlayer(pl);
-        }
+//        for (int i =0;i<15;i++){
+//            Player pl = new Player("myEmail" + i + "@gmail.com", "myNick " + i,"pass" + (i+1) * 3, "/images/myProfile" + i);
+//            addPlayer(pl);
+//        }
 
-        for (int i =0;i<12;i++){
-            GuessGame game = new GuessGame(players.get(i), "/images/drawPhoto" + i);
-            addGameToGuess(game);
-        }
-
-        for (int i =0;i<12;i++){
-            DrawGame game = new DrawGame(players.get(i), "myWord " + i);
-            addGameToDraw(game);
-        }
+//        for (int i =0;i<12;i++){
+//            GuessGame game = new GuessGame(players.get(i), "/images/drawPhoto" + i);
+//            addGameToGuess(game);
+//        }
+//
+//        for (int i =0;i<12;i++){
+//            DrawGame game = new DrawGame(players.get(i), "myWord " + i);
+//            addGameToDraw(game);
+//        }
     }
 
     public static Model getInstance(){
         return instance;
     }
 
-    public List<Player> getAllPlayers(){
-        return players;
+    public void getAllPlayers(GetAllPlayersListener listener){
+        modelFirebase.getAllPlayersAsync(listener);
     }
 
     public List<GuessGame> getGamesToGuess(){ return gamesToGuess; }
@@ -79,16 +99,37 @@ public class Model {
         // TODO: register the gameID to the pending game of the next player.
     }
 
-    public Boolean registerNewUser(String nickname, String email, String pass, Bitmap profilePhoto, ModelFirebase.RegisterUserListener listener)
+    public Boolean registerNewUser(String nickname, String email, String pass, String confirmPass, Bitmap profilePhoto, RegisterUserListener listener)
     {
+        if (nickname.isEmpty() || email.isEmpty() || pass.isEmpty() || confirmPass.isEmpty())
+        {
+            listener.onFail("FWields cannot be blank");
+            return false;
+        }
+        if (!pass.equals(confirmPass))
+        {
+            listener.onFail("Passwords not equal");
+            return false;
+        }
         modelFirebase.registerUser(nickname, email, pass, profilePhoto, listener);
         return true;
     }
 
-    public Boolean loginNewUser(String email, String pass, ModelFirebase.LoginUserListener listener)
+    public Boolean loginNewUser(String email, String pass, LoginUserListener listener)
     {
+        if (email.isEmpty() || pass.isEmpty())
+        {
+            listener.onFail("Fields cannot be blank");
+            return false;
+        }
+
         modelFirebase.loginUser(email, pass, listener);
         return true;
+    }
+
+    public void getPlayerProfile(String profileUrl, GetImageListener listener)
+    {
+        modelFirebase.getImage(profileUrl, listener);
     }
 
 }

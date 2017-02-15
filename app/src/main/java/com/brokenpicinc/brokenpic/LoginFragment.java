@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.brokenpicinc.brokenpic.model.Model;
 import com.brokenpicinc.brokenpic.model.ModelFirebase;
+import com.brokenpicinc.brokenpic.utils.DialogInterrupter;
 
 import org.w3c.dom.Text;
 
@@ -44,7 +45,7 @@ public class LoginFragment extends Fragment {
                 String password = passwordEditText.getText().toString();
 
                 // TODO: verify that email and password correct (use Model or Firebase)
-                Model.getInstance().loginNewUser(email, password, new ModelFirebase.LoginUserListener() {
+                Model.getInstance().loginNewUser(email, password, new Model.LoginUserListener() {
                     @Override
                     public void onSuccess() {
                         final MenuFragment menuFragment = new MenuFragment();
@@ -54,7 +55,8 @@ public class LoginFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFail() {
+                    public void onFail(String msg) {
+                        DialogInterrupter.showNeturalDialog(msg, getActivity());
                         emailEditText.setText("");
                         passwordEditText.setText("");
                     }

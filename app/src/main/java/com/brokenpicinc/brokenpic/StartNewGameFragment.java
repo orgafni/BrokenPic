@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.brokenpicinc.brokenpic.model.Model;
 import com.brokenpicinc.brokenpic.model.Player;
+import com.brokenpicinc.brokenpic.utils.DialogInterrupter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -46,7 +48,8 @@ public class StartNewGameFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_start_new_game, container, false);
 
-        playersList = Model.getInstance().getAllPlayers();
+        playersList = new LinkedList<Player>();
+
         chosenPlayersList = new LinkedList<Player>();
 
         final ListView list = (ListView) view.findViewById(R.id.particpantsListListView);
@@ -79,6 +82,19 @@ public class StartNewGameFragment extends Fragment {
                     ftr.replace(R.id.mainContainer, chooseWordFragment);
                     ftr.commit();
                 }
+            }
+        });
+
+        Model.getInstance().getAllPlayers(new Model.GetAllPlayersListener() {
+            @Override
+            public void onResult(List<Player> players) {
+                playersList.addAll(players);
+                adapter.refershData();
+            }
+
+            @Override
+            public void onCancel(String msg) {
+                DialogInterrupter.showNeturalDialog(msg, getActivity());
             }
         });
 
@@ -121,10 +137,20 @@ public class StartNewGameFragment extends Fragment {
             final ImageView imageView = (ImageView)view.findViewById(R.id.row_participent_image);
             final ImageButton addRemoveBtn = (ImageButton) view.findViewById(R.id.row_participent_add_remove);
 
-            nameTv.setText(pl.getNickname());
+            nameTv.setText(pl.getName());
             // Todo: set real user photo
-            imageView.setImageResource(R.mipmap.ic_launcher);
 
+            Model.getInstance().getPlayerProfile(pl.getImage(), new Model.GetImageListener() {
+                @Override
+                public void onSuccess(Bitmap image) {
+                    imageView.setImageBitmap(image);
+                }
+
+                @Override
+                public void onFail() {
+
+                }
+            });
 
             final int playerIndex = chosenPlayersList.indexOf(pl);
             final String emptyIndex = " ";

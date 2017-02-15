@@ -14,11 +14,11 @@ public class GuessGame {
     }
 
     public String getDrawerName() {
-        return this.drawerPlayer.getNickname();
+        return this.drawerPlayer.getName();
     }
 
     public String getDrawerProfilePhotoPath() {
-        return this.drawerPlayer.getProfilePhotoPath();
+        return this.drawerPlayer.getImage();
     }
 
     public String getImageToGuessPath() {

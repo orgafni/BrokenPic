@@ -1,25 +1,30 @@
 package com.brokenpicinc.brokenpic.model;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by orgaf_000 on 2/4/2017.
@@ -38,17 +43,7 @@ public class ModelFirebase {
 //        mAuth = FirebaseAuth.getInstance();
 //    }
 
-    public interface RegisterUserListener{
-        public void onSuccess();
-        public void onFail();
-    }
-
-    public interface LoginUserListener{
-        public void onSuccess();
-        public void onFail();
-    }
-
-    public void registerUser(final String nickName, String email, String password, final Bitmap profilePhoto, final RegisterUserListener listener)
+    public void registerUser(final String nickName, String email, String password, final Bitmap profilePhoto, final Model.RegisterUserListener listener)
     {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -57,7 +52,7 @@ public class ModelFirebase {
 
                 if (!task.isSuccessful()){
                     Log.d(TAG, "failed to register user");
-                    listener.onFail();
+                    listener.onFail(task.getException().getMessage());
                 }
                 else{
 
@@ -66,7 +61,7 @@ public class ModelFirebase {
 
                     String profilePath = "profilePhotos/" + currentUser.getUid() + ".jpg";
                     // Create a storage reference from our app
-                    StorageReference profileStorageRef = storage.getReferenceFromUrl(storageURL).child("profilePhotos/" + currentUser.getUid() + ".jpg");
+                    StorageReference profileStorageRef = storage.getReferenceFromUrl(storageURL).child(profilePath);
 
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     profilePhoto.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -78,7 +73,7 @@ public class ModelFirebase {
                         public void onFailure(@NonNull Exception exception) {
                             // Handle unsuccessful uploads
                             Log.d(TAG, "failed to upload photo");
-                            listener.onFail();
+                            listener.onFail(exception.getMessage());
                         }
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -88,10 +83,9 @@ public class ModelFirebase {
                         }
                     });
 
-                    database.getReference("Players").child(currentUser.getUid()).child("name").setValue(nickName);
-                    database.getReference("Players").child(currentUser.getUid()).child("image").setValue(profilePath);
+                    Player pl = new Player(nickName, profilePath);
+                    database.getReference("Players").child(currentUser.getUid()).setValue(pl);
 
-                    database.getReference("playerGames").child(currentUser.getUid()).child("finished");
                     listener.onSuccess();
 
                 }
@@ -99,7 +93,7 @@ public class ModelFirebase {
         });
     }
 
-    public void loginUser(String email, String password, final LoginUserListener listener)
+    public void loginUser(String email, String password, final Model.LoginUserListener listener)
     {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -108,7 +102,7 @@ public class ModelFirebase {
 
                 if (!task.isSuccessful()){
                     Log.d(TAG, "failed to sing in user");
-                    listener.onFail();
+                    listener.onFail(task.getException().getMessage());
                 }
                 else{
 
@@ -119,6 +113,49 @@ public class ModelFirebase {
                 }
             }
         });
+    }
+
+    public void getAllPlayersAsync(final Model.GetAllPlayersListener listener){
+
+        DatabaseReference myRef = database.getReference("Players");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<Player> plList = new LinkedList<Player>();
+                for (DataSnapshot plSnapshot : dataSnapshot.getChildren()) {
+                    Player pl = plSnapshot.getValue(Player.class);
+                    Log.d(TAG, pl.getName() + " - " + pl.getImage());
+                    plList.add(pl);
+                }
+                listener.onResult(plList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onCancel("Connection error");
+            }
+        });
+    }
+
+    public void getImage(String url, final Model.GetImageListener listener){
+        StorageReference httpsReference = storage.getReferenceFromUrl(storageURL).child(url);
+        final long ONE_MEGABYTE = 1024 * 1024;
+        httpsReference.getBytes(3* ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap image = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                listener.onSuccess(image);
+                // Data for "images/island.jpg" is returns, use this as needed
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception exception) {
+                Log.d("TAG",exception.getMessage());
+                listener.onFail();
+                // Handle any errors
+            }
+        });
+
     }
 
 

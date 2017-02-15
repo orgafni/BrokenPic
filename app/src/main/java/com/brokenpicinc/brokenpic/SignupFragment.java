@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 
 import com.brokenpicinc.brokenpic.model.Model;
 import com.brokenpicinc.brokenpic.model.ModelFirebase;
+import com.brokenpicinc.brokenpic.utils.DialogInterrupter;
 import com.mvc.imagepicker.ImagePicker;
 
 import java.io.ByteArrayOutputStream;
@@ -70,7 +71,6 @@ public class SignupFragment extends Fragment {
                 final EditText passwordEditText = ((EditText)view.findViewById(R.id.register_password_edittext));
                 final EditText confirmPasswordEditText = ((EditText)view.findViewById(R.id.register_confirmPass_edittext));
 
-
                 final String nickname = nicknameEditText.getText().toString();
                 final String email = emailEditText.getText().toString();
                 final String password = passwordEditText.getText().toString();
@@ -78,7 +78,7 @@ public class SignupFragment extends Fragment {
                 ImageButton profilePhotoBtn = ((ImageButton)view.findViewById(R.id.register_profile_photo_imagebtn));
                 Bitmap profilePhoto = ((BitmapDrawable)profilePhotoBtn.getDrawable()).getBitmap();
                 // TODO: verify that email is not exists on Model (or firebase), verify passwords are equal, and register user Model (or firebase)
-                Model.getInstance().registerNewUser(nickname, email, password, profilePhoto, new ModelFirebase.RegisterUserListener() {
+                Model.getInstance().registerNewUser(nickname, email, password, confirmPassword, profilePhoto, new Model.RegisterUserListener() {
                     @Override
                     public void onSuccess() {
                         final MenuFragment menuFragment = new MenuFragment();
@@ -88,7 +88,8 @@ public class SignupFragment extends Fragment {
                     }
 
                     @Override
-                    public void onFail() {
+                    public void onFail(String msg) {
+                        DialogInterrupter.showNeturalDialog(msg, getActivity());
                         nicknameEditText.setText("");
                         emailEditText.setText("");
                         passwordEditText.setText("");

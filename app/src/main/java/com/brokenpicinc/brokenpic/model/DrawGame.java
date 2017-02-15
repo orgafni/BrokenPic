@@ -14,11 +14,11 @@ public class DrawGame {
     }
 
     public String getPlayerName() {
-        return this.player.getNickname();
+        return this.player.getName();
     }
 
     public String getPlayerProfilePhotoPath() {
-        return this.player.getProfilePhotoPath();
+        return this.player.getImage();
     }
 
     public String getWordToDraw() {
