@@ -6,8 +6,10 @@
     >
 
     <LinearLayout
+        android:id="@+id/chooseGuessLayout"
         android:background="@drawable/participant_row"
         android:layout_width="fill_parent"
+        android:visibility="invisible"
         android:layout_height="40dp"
         android:orientation="horizontal"
         android:weightSum="100">

@@ -12,7 +12,7 @@ import java.util.List;
 public class Model {
     private final static Model instance = new Model();
     ModelFirebase modelFirebase;
-
+    final public static String DrawType = "Draw";
 
     private List<Player> players = new LinkedList<Player>();
     private List<GuessGame> gamesToGuess = new LinkedList<GuessGame>();
@@ -33,14 +33,30 @@ public class Model {
         public void onCancel(String msg);
     }
 
+    public interface GetPlayerListener{
+        public void onResult(Player player);
+        public void onCancel(String msg);
+    }
+
     public interface GetAllGamesToDrawListener{
-        public void onResult(List<playerInGame> games);
+        public void onResult(List<String> games);
         public void onCancel(String msg);
     }
 
     public interface GetImageListener{
         void onSuccess(Bitmap image);
         void onFail();
+    }
+
+    public interface GetNumericResultListener {
+        void onSuccess(int res);
+        void onFail();
+    }
+
+
+    public interface GetDrawGameDetailsListener{
+        void onResult(Bitmap playerProfilePhoto, String playerName, String wordToDraw);
+        void onFail(String msg);
     }
 
     private Model(){
@@ -58,7 +74,7 @@ public class Model {
     public List<GuessGame> getGamesToGuess(){
         return gamesToGuess; }
 
-    public List<DrawGame> getGamesToDraw(GetAllGamesToDrawListener listener){
+    public void getGamesToDraw(GetAllGamesToDrawListener listener){
         modelFirebase.getAllGamesToDrawAsync(listener);
     }
 
@@ -82,7 +98,7 @@ public class Model {
         String gameID = modelFirebase.addGame(newGame);
 
         // TODO: register this gameID to the pending games of the second player in the list
-        modelFirebase.addGameToPendingListOfPlayer(gameID, playersList.get(1).getUniqueID());
+        modelFirebase.addGameToPendingListOfPlayer(gameID, playersList.get(1).getUniqueID(), DrawType);
 
     }
 
@@ -134,4 +150,42 @@ public class Model {
         modelFirebase.getImage(profileUrl, listener);
     }
 
+    public void getDrawGameDetails(final String gameId, final Model.GetDrawGameDetailsListener listener) {
+        modelFirebase.getGameTurnIndex(gameId, new GetNumericResultListener(){
+                    @Override
+                    public void onSuccess(int nextTurnIndex) {
+                        modelFirebase.getPlayerInGameByIndex(gameId, nextTurnIndex - 1, new ModelFirebase.GetMyTurnListener()
+                        {
+                            @Override
+                            public void onSuccess(final playerInGame plInGame) {
+                                modelFirebase.getPlayerDetailsByPlayerID(plInGame.getPlayerID(), new GetPlayerListener(){
+                                    @Override
+                                    public void onResult(final Player player) {
+                                        modelFirebase.getImage(player.getImage(), new GetImageListener() {
+                                            @Override
+                                            public void onSuccess(Bitmap image) {
+                                                listener.onResult(image, player.getName(), plInGame.getWord());
+                                            }
+
+                                            @Override
+                                            public void onFail() {
+                                            }
+                                        });
+                                    }
+                                    @Override
+                                    public void onCancel(String msg) {
+                                    }
+                                });
+                            }
+                            @Override
+                            public void onFail() {
+                            }
+                        });
+                    }
+                    @Override
+                    public void onFail() {
+                    }
+                }
+        );
+    }
 }

@@ -147,27 +147,19 @@ public class ModelFirebase {
     }
 
     public void getAllGamesToDrawAsync(final Model.GetAllGamesToDrawListener listener){
-
-        DatabaseReference myRef = database.getReference("playerGames").child(getCurrentUserID()).child("pendig");
+        Log.d(TAG, getCurrentUserID());
+        DatabaseReference myRef = database.getReference("playerGames").child(getCurrentUserID()).child("pending");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                final List<playerInGame> gameList = new LinkedList<playerInGame>();
+                final List<String> gameList = new LinkedList<>();
                 for (DataSnapshot plSnapshot : dataSnapshot.getChildren()) {
-                    String gameID = plSnapshot.getKey();
-                    getMyTurnToGuessByGameID(gameID, new GetMyTurnListener() {
-                        @Override
-                        public void onSuccess(playerInGame res) {
-                            gameList.add(res);
-                        }
-
-                        @Override
-                        public void onFail() {
-
-                        }
-                    });
+                    if (plSnapshot.getValue(String.class).equals(Model.DrawType)) {
+                        String gameID = plSnapshot.getKey();
+                        gameList.add(gameID);
+                    }
                 }
-                listener.onResult(plList);
+                listener.onResult(gameList);
             }
 
             @Override
@@ -256,8 +248,78 @@ public class ModelFirebase {
         return currentUser.getUid();
     }
 
-    public void addGameToPendingListOfPlayer(String gameID, String playerID)
+    public void addGameToPendingListOfPlayer(String gameID, String playerID, String GuessOrDraw)
     {
-        database.getReference("playerGames").child(playerID).child("pending").child(gameID).setValue(true);
+        database.getReference("playerGames").child(playerID).child("pending").child(gameID).setValue(GuessOrDraw);
+    }
+
+    public void getGameTurnIndex(String gameID, final Model.GetNumericResultListener listener)
+    {
+        DatabaseReference myRef = database.getReference("Games").child(gameID).child("nextTurnIndex");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int nextTurnIndex = dataSnapshot.getValue(Integer.class);
+                listener.onSuccess(nextTurnIndex);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getPlayerInGameByIndex(String gameId, int playerIndexInGame, final ModelFirebase.GetMyTurnListener listener)
+    {
+        DatabaseReference myRef = database.getReference("Games").child(gameId).child("playersInGame").child(Integer.toString(playerIndexInGame));
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                playerInGame plInGame = new playerInGame();
+                for (DataSnapshot plSnapshot : dataSnapshot.getChildren()) {
+                    if (plSnapshot.getKey().equals("playerID"))
+                    {
+                        plInGame.setPlayerID(plSnapshot.getValue(String.class));
+                    }
+                    else if(plSnapshot.getKey().equals("word"))
+                    {
+                        plInGame.setWord(plSnapshot.getValue(String.class));
+                    }
+                }
+                listener.onSuccess(plInGame);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getPlayerDetailsByPlayerID(String playerID, final Model.GetPlayerListener listener){
+        DatabaseReference myRef = database.getReference("Players").child(playerID);
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Player pl = new Player();
+                for (DataSnapshot plSnapshot : dataSnapshot.getChildren()) {
+                    if (plSnapshot.getKey().equals("image"))
+                    {
+                        pl.setImage(plSnapshot.getValue(String.class));
+                    }
+                    else if(plSnapshot.getKey().equals("name"))
+                    {
+                        pl.setName(plSnapshot.getValue(String.class));
+                    }
+                }
+                listener.onResult(pl);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
