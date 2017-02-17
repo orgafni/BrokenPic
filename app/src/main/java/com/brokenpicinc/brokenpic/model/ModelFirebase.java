@@ -65,28 +65,7 @@ public class ModelFirebase {
                     Log.d(TAG, "success get user: uid: " + currentUser.getUid()+ " displayName: " + currentUser.getDisplayName() + " email" + currentUser.getEmail());
 
                     String profilePath = "profilePhotos/" + currentUser.getUid() + ".jpg";
-                    // Create a storage reference from our app
-                    StorageReference profileStorageRef = storage.getReferenceFromUrl(storageURL).child(profilePath);
-
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    profilePhoto.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                    byte[] data = baos.toByteArray();
-
-                    UploadTask uploadTask = profileStorageRef.putBytes(data);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
-                            Log.d(TAG, "failed to upload photo");
-                            listener.onFail(exception.getMessage());
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                        }
-                    });
+                    uploadImage(profilePhoto, profilePath);
 
                     Player pl = new Player(nickName, profilePath);
                     database.getReference("Players").child(currentUser.getUid()).setValue(pl);
@@ -212,7 +191,29 @@ public class ModelFirebase {
     }
 
 
+    public void uploadImage(Bitmap image, String destPath)
+    {
+        // Create a storage reference from our app
+        StorageReference profileStorageRef = storage.getReferenceFromUrl(storageURL).child(destPath);
 
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = profileStorageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Log.d(TAG, "failed to upload photo");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+            }
+        });
+    }
 
     public void getImage(String url, final Model.GetImageListener listener){
         StorageReference httpsReference = storage.getReferenceFromUrl(storageURL).child(url);
@@ -321,5 +322,22 @@ public class ModelFirebase {
 
             }
         });
+    }
+
+    void SetDrawToGame(String GameID, int CurrTurnIndex, Bitmap draw)
+    {
+        String imagePath = "games/" + GameID + "/" + getCurrentUserID() + ".jpg";
+        uploadImage(draw, imagePath);
+        database.getReference("Games").child(GameID).child("playersInGame").child(Integer.toString(CurrTurnIndex)).child("picturePath").setValue(imagePath);
+    }
+
+    void removePendingGame(String GameID)
+    {
+        database.getReference("playerGames").child(getCurrentUserID()).child("pending").child(GameID).removeValue();
+    }
+
+    void advancedGameTurnIndex(String GameID, int NextTurnIndex)
+    {
+        database.getReference("Games").child(GameID).child("nextTurnIndex").setValue(Integer.toString(NextTurnIndex));
     }
 }

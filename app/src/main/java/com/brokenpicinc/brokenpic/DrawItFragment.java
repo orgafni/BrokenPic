@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -72,6 +73,9 @@ public class DrawItFragment extends Fragment {
         sendDrawBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Bitmap playerDraw = ((BitmapDrawable)yourPicGuessImageBtn.getDrawable()).getBitmap();
+
                 // TODO: get the draw picture path.
                 String drawPicPath = "/asad/asdasd/asdd.png";
 
@@ -82,7 +86,7 @@ public class DrawItFragment extends Fragment {
                 }
                 else
                 {
-                    Model.getInstance().advanceGame(gameToDraw, drawPicPath);
+                    Model.getInstance().advanceGame(gameToDraw, playerDraw);
                     final MenuFragment menuFragment = new MenuFragment();
                     FragmentTransaction ftr = getFragmentManager().beginTransaction();
                     ftr.replace(R.id.mainContainer,menuFragment);

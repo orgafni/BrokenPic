@@ -108,7 +108,7 @@ public class ChooseGuessFragment extends Fragment {
             final String gameId = gamesToDrawList.get(i);
             Model.getInstance().getDrawGameDetails(gameId, new Model.GetDrawGameDetailsListener() {
                 @Override
-                public void onResult(Bitmap playerProfilePhoto, String playerName, String wordToDraw) {
+                public void onResult(Bitmap playerProfilePhoto, String playerName, String wordToDraw, String gameId, int currTurnIndex) {
                     indexTv.setText(Integer.toString(i + 1));
                     participentImageView.setImageBitmap(playerProfilePhoto);
                     phraseTv.setText(wordToDraw);
@@ -117,6 +117,8 @@ public class ChooseGuessFragment extends Fragment {
                     game.setWordToDraw(wordToDraw);
                     game.setPlayerName(playerName);
                     game.setPlayerProfile(playerProfilePhoto);
+                    game.setGameID(gameId);
+                    game.setCurrTurnIndex(currTurnIndex);
                 }
 
                 @Override

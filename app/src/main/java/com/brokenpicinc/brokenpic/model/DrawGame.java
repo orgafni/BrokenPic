@@ -10,8 +10,26 @@ public class DrawGame {
     String wordToDraw;
     String playerName;
     Bitmap playerProfile;
+    String gameID;
+    int currTurnIndex;
 
     public DrawGame() {
+    }
+
+    public String getGameID() {
+        return gameID;
+    }
+
+    public void setGameID(String gameID) {
+        this.gameID = gameID;
+    }
+
+    public int getCurrTurnIndex() {
+        return currTurnIndex;
+    }
+
+    public void setCurrTurnIndex(int currTurnIndex) {
+        this.currTurnIndex = currTurnIndex;
     }
 
     public String getWordToDraw() {

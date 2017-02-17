@@ -13,6 +13,7 @@ public class Model {
     private final static Model instance = new Model();
     ModelFirebase modelFirebase;
     final public static String DrawType = "Draw";
+    final public static String GuessType = "Guess";
 
     private List<Player> players = new LinkedList<Player>();
     private List<GuessGame> gamesToGuess = new LinkedList<GuessGame>();
@@ -55,7 +56,7 @@ public class Model {
 
 
     public interface GetDrawGameDetailsListener{
-        void onResult(Bitmap playerProfilePhoto, String playerName, String wordToDraw);
+        void onResult(Bitmap playerProfilePhoto, String playerName, String wordToDraw, String gameID, int currTurnIndex);
         void onFail(String msg);
     }
 
@@ -110,11 +111,31 @@ public class Model {
         // TODO: if this is the last turn of the game, register this game in the finishedGames of all the players that took part in this game.
     }
 
-    public void advanceGame(DrawGame game, String drawPath)
+    public void advanceGame(final DrawGame game, Bitmap draw)
     {
         // TODO: find the game received in the DB, set the received draw as the current player draw.
+        modelFirebase.SetDrawToGame(game.getGameID(), game.getCurrTurnIndex(), draw);
+
+        modelFirebase.advancedGameTurnIndex(game.getGameID(), game.getCurrTurnIndex() + 1);
+
         // TODO: remove the game from this player pending games.
+        modelFirebase.removePendingGame(game.getGameID());
+
         // TODO: register the gameID to the pending game of the next player.
+
+        modelFirebase.getPlayerInGameByIndex(game.getGameID(), game.getCurrTurnIndex() + 1, new ModelFirebase.GetMyTurnListener() {
+            @Override
+            public void onSuccess(playerInGame res) {
+                String nextPlayerId = res.getPlayerID();
+                modelFirebase.addGameToPendingListOfPlayer(game.getGameID(), nextPlayerId, GuessType);
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
+
     }
 
     public Boolean registerNewUser(String nickname, String email, String pass, String confirmPass, Bitmap profilePhoto, RegisterUserListener listener)
@@ -153,7 +174,7 @@ public class Model {
     public void getDrawGameDetails(final String gameId, final Model.GetDrawGameDetailsListener listener) {
         modelFirebase.getGameTurnIndex(gameId, new GetNumericResultListener(){
                     @Override
-                    public void onSuccess(int nextTurnIndex) {
+                    public void onSuccess(final int nextTurnIndex) {
                         modelFirebase.getPlayerInGameByIndex(gameId, nextTurnIndex - 1, new ModelFirebase.GetMyTurnListener()
                         {
                             @Override
@@ -164,7 +185,7 @@ public class Model {
                                         modelFirebase.getImage(player.getImage(), new GetImageListener() {
                                             @Override
                                             public void onSuccess(Bitmap image) {
-                                                listener.onResult(image, player.getName(), plInGame.getWord());
+                                                listener.onResult(image, player.getName(), plInGame.getWord(), gameId, nextTurnIndex);
                                             }
 
                                             @Override
