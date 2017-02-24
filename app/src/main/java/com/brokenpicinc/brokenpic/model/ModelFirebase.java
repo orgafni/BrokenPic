@@ -125,7 +125,7 @@ public class ModelFirebase {
         });
     }
 
-    public void getAllGamesToDrawAsync(final Model.GetAllGamesToDrawListener listener){
+    public void getAllGamesToDrawAsync(final Model.GetAllGamesToDrawOrGuessListener listener){
         Log.d(TAG, getCurrentUserID());
         DatabaseReference myRef = database.getReference("playerGames").child(getCurrentUserID()).child("pending");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -134,6 +134,29 @@ public class ModelFirebase {
                 final List<String> gameList = new LinkedList<>();
                 for (DataSnapshot plSnapshot : dataSnapshot.getChildren()) {
                     if (plSnapshot.getValue(String.class).equals(Model.DrawType)) {
+                        String gameID = plSnapshot.getKey();
+                        gameList.add(gameID);
+                    }
+                }
+                listener.onResult(gameList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onCancel("Connection error");
+            }
+        });
+    }
+
+    public void getAllGamesToGuessAsync(final Model.GetAllGamesToDrawOrGuessListener listener){
+        Log.d(TAG, getCurrentUserID());
+        DatabaseReference myRef = database.getReference("playerGames").child(getCurrentUserID()).child("pending");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<String> gameList = new LinkedList<>();
+                for (DataSnapshot plSnapshot : dataSnapshot.getChildren()) {
+                    if (plSnapshot.getValue(String.class).equals(Model.GuessType)) {
                         String gameID = plSnapshot.getKey();
                         gameList.add(gameID);
                     }
@@ -287,6 +310,10 @@ public class ModelFirebase {
                     {
                         plInGame.setWord(plSnapshot.getValue(String.class));
                     }
+                    else if(plSnapshot.getKey().equals("picturePath"))
+                    {
+                        plInGame.setPicturePath(plSnapshot.getValue(String.class));
+                    }
                 }
                 listener.onSuccess(plInGame);
             }
@@ -330,6 +357,12 @@ public class ModelFirebase {
         uploadImage(draw, imagePath);
         database.getReference("Games").child(GameID).child("playersInGame").child(Integer.toString(CurrTurnIndex)).child("picturePath").setValue(imagePath);
     }
+
+    void SetGuessToGame(String GameID, int CurrTurnIndex, String guess)
+    {
+        database.getReference("Games").child(GameID).child("playersInGame").child(Integer.toString(CurrTurnIndex)).child("word").setValue(guess);
+    }
+
 
     void removePendingGame(String GameID)
     {

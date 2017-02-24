@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.brokenpicinc.brokenpic.model.GuessGame;
 import com.brokenpicinc.brokenpic.model.Model;
+import com.brokenpicinc.brokenpic.utils.DialogInterrupter;
 
 
 /**
@@ -43,11 +44,9 @@ public class GuessItFragment extends Fragment {
         final EditText yourGuessEditText = (EditText) view.findViewById(R.id.your_guess_edittext);
         final ImageButton sendGuessBtn = (ImageButton) view.findViewById(R.id.send_your_guess);
 
-        // TODO: set real drawer profile photo
-        drawerImageView.setImageResource(R.mipmap.ic_launcher);
-        drawerNameTv.setText(gameToGuess.getDrawerName());
-        // TODO: set real drawer draw
-        ImageToGuessView.setImageResource(R.mipmap.ic_launcher);
+        drawerImageView.setImageBitmap(gameToGuess.getPlayerProfilePhoto());
+        drawerNameTv.setText(gameToGuess.getPlayerName());
+        ImageToGuessView.setImageBitmap(gameToGuess.getPictureToGuess())
 
         sendGuessBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +54,7 @@ public class GuessItFragment extends Fragment {
                 String guessWord = yourGuessEditText.getText().toString();
                 if (guessWord.isEmpty())
                 {
-                    // TODO: alert
+                    DialogInterrupter.showNeturalDialog("your guess cannot be empty", getActivity());
                 }
                 else
                 {

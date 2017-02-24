@@ -18,13 +18,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.brokenpicinc.brokenpic.model.DrawGame;
-import com.brokenpicinc.brokenpic.model.GuessGame;
 import com.brokenpicinc.brokenpic.model.Model;
-import com.brokenpicinc.brokenpic.model.Player;
-import com.brokenpicinc.brokenpic.model.playerInGame;
 import com.brokenpicinc.brokenpic.utils.DialogInterrupter;
-
-import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -53,7 +48,7 @@ public class ChooseGuessFragment extends Fragment {
         final GuessesAdapter adapter = new GuessesAdapter(getActivity());
         list.setAdapter(adapter);
 
-        Model.getInstance().getGamesToDraw(new Model.GetAllGamesToDrawListener() {
+        Model.getInstance().getGamesToDraw(new Model.GetAllGamesToDrawOrGuessListener() {
             @Override
             public void onResult(List<String> games) {
                 gamesToDrawList.addAll(games);

@@ -39,7 +39,7 @@ public class Model {
         public void onCancel(String msg);
     }
 
-    public interface GetAllGamesToDrawListener{
+    public interface GetAllGamesToDrawOrGuessListener {
         public void onResult(List<String> games);
         public void onCancel(String msg);
     }
@@ -60,6 +60,12 @@ public class Model {
         void onFail(String msg);
     }
 
+    public interface GetGuessGameDetailsListener{
+        void onResult(Bitmap playerProfilePhoto, String playerName, Bitmap pictureToGuess, String gameID, int currTurnIndex);
+        void onFail(String msg);
+    }
+
+
     private Model(){
         modelFirebase = new ModelFirebase();
     }
@@ -72,10 +78,11 @@ public class Model {
         modelFirebase.getAllPlayersAsync(listener);
     }
 
-    public List<GuessGame> getGamesToGuess(){
-        return gamesToGuess; }
+    public void getGamesToGuess(GetAllGamesToDrawOrGuessListener listener) {
+        modelFirebase.getAllGamesToGuessAsync(listener);
+    }
 
-    public void getGamesToDraw(GetAllGamesToDrawListener listener){
+    public void getGamesToDraw(GetAllGamesToDrawOrGuessListener listener){
         modelFirebase.getAllGamesToDrawAsync(listener);
     }
 
@@ -106,7 +113,11 @@ public class Model {
     public void advanceGame(GuessGame game, String guessWord)
     {
         // TODO: find the game received in the DB, set the received guessWord as the current player guess.
+        modelFirebase.SetGuessToGame(game.getGameID(), game.getCurrTurnIndex(), guessWord);
+
         // TODO: remove the game from this player pending games.
+        modelFirebase.removePendingGame(game.getGameID());
+
         // TODO: if there is another player in this game, register the gameID to the pending game of the next player.
         // TODO: if this is the last turn of the game, register this game in the finishedGames of all the players that took part in this game.
     }
@@ -186,6 +197,56 @@ public class Model {
                                             @Override
                                             public void onSuccess(Bitmap image) {
                                                 listener.onResult(image, player.getName(), plInGame.getWord(), gameId, nextTurnIndex);
+                                            }
+
+                                            @Override
+                                            public void onFail() {
+                                            }
+                                        });
+                                    }
+                                    @Override
+                                    public void onCancel(String msg) {
+                                    }
+                                });
+                            }
+                            @Override
+                            public void onFail() {
+                            }
+                        });
+                    }
+                    @Override
+                    public void onFail() {
+                    }
+                }
+        );
+    }
+
+    public void getGuessGameDetails(final String gameId, final GetGuessGameDetailsListener listener){
+        modelFirebase.getGameTurnIndex(gameId, new GetNumericResultListener(){
+                    @Override
+                    public void onSuccess(final int nextTurnIndex) {
+                        modelFirebase.getPlayerInGameByIndex(gameId, nextTurnIndex - 1, new ModelFirebase.GetMyTurnListener()
+                        {
+                            @Override
+                            public void onSuccess(final playerInGame plInGame) {
+                                modelFirebase.getPlayerDetailsByPlayerID(plInGame.getPlayerID(), new GetPlayerListener(){
+                                    @Override
+                                    public void onResult(final Player player) {
+                                        modelFirebase.getImage(player.getImage(), new GetImageListener() {
+                                            @Override
+                                            public void onSuccess(final Bitmap profileImage) {
+                                                modelFirebase.getImage(plInGame.getPicturePath(), new GetImageListener() {
+                                                    @Override
+                                                    public void onSuccess(Bitmap pictureToGuess) {
+                                                        listener.onResult(profileImage, player.getName(), pictureToGuess, gameId, nextTurnIndex);
+                                                    }
+
+                                                    @Override
+                                                    public void onFail() {
+
+                                                    }
+                                                });
+
                                             }
 
                                             @Override
