@@ -14,16 +14,19 @@ public class Game {
     int creationTime;
     int nextTurnIndex;
     List<playerInGame> playersInGame;
+    int playersAmount;
 
     public Game() {
         gameState = GameState.NOT_YET;
         nextTurnIndex = 0;
         playersInGame = new LinkedList<>();
+        playersAmount = 0;
     }
 
     public Game(String startWord, List<Player> playersList) {
         this();
         nextTurnIndex = 1;
+        playersAmount = playersList.size();
         for (Player pl: playersList) {
             playersInGame.add(new playerInGame(pl));
         }
@@ -52,6 +55,22 @@ public class Game {
 
     public void setNextTurnIndex(int nextTurnIndex) {
         this.nextTurnIndex = nextTurnIndex;
+    }
+
+    public List<playerInGame> getPlayersInGame() {
+        return playersInGame;
+    }
+
+    public void setPlayersInGame(List<playerInGame> playersInGame) {
+        this.playersInGame = playersInGame;
+    }
+
+    public int getPlayersAmount() {
+        return playersAmount;
+    }
+
+    public void setPlayersAmount(int playersAmount) {
+        this.playersAmount = playersAmount;
     }
 
     public enum GameState

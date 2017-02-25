@@ -48,6 +48,11 @@ public class ModelFirebase {
         void onFail();
     }
 
+    public interface GetGameListener{
+        void onSuccess(Game game);
+        void onFail();
+    }
+
     public void registerUser(final String nickName, String email, String password, final Bitmap profilePhoto, final Model.RegisterUserListener listener)
     {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -277,6 +282,11 @@ public class ModelFirebase {
         database.getReference("playerGames").child(playerID).child("pending").child(gameID).setValue(GuessOrDraw);
     }
 
+    public void addGameToFinishedListOfPlayer(String gameID, String playerID, Game.GameState gameState)
+    {
+        database.getReference("playerGames").child(playerID).child("finished").child(gameID).setValue(gameState);
+    }
+
     public void getGameTurnIndex(String gameID, final Model.GetNumericResultListener listener)
     {
         DatabaseReference myRef = database.getReference("Games").child(gameID).child("nextTurnIndex");
@@ -285,6 +295,23 @@ public class ModelFirebase {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int nextTurnIndex = dataSnapshot.getValue(Integer.class);
                 listener.onSuccess(nextTurnIndex);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getPlayersAmountInGame(String gameID, final Model.GetNumericResultListener listener)
+    {
+        DatabaseReference myRef = database.getReference("Games").child(gameID).child("playersAmount");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int playersAmount = dataSnapshot.getValue(Integer.class);
+                listener.onSuccess(playersAmount);
             }
 
             @Override
@@ -371,6 +398,28 @@ public class ModelFirebase {
 
     void advancedGameTurnIndex(String GameID, int NextTurnIndex)
     {
-        database.getReference("Games").child(GameID).child("nextTurnIndex").setValue(Integer.toString(NextTurnIndex));
+        database.getReference("Games").child(GameID).child("nextTurnIndex").setValue(NextTurnIndex);
+    }
+
+    void getGameByGameId(String gameID, final GetGameListener listener)
+    {
+        DatabaseReference myRef = database.getReference("Games").child(gameID);
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Game game = dataSnapshot.getValue(Game.class);
+                listener.onSuccess(game);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onFail();
+            }
+        });
+    }
+
+    void updateGameState(String gameID, Game.GameState newGameState)
+    {
+        database.getReference("Games").child(gameID).child("gameState").setValue(newGameState);
     }
 }

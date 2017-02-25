@@ -46,7 +46,7 @@ public class GuessItFragment extends Fragment {
 
         drawerImageView.setImageBitmap(gameToGuess.getPlayerProfilePhoto());
         drawerNameTv.setText(gameToGuess.getPlayerName());
-        ImageToGuessView.setImageBitmap(gameToGuess.getPictureToGuess())
+        ImageToGuessView.setImageBitmap(gameToGuess.getPictureToGuess());
 
         sendGuessBtn.setOnClickListener(new View.OnClickListener() {
             @Override

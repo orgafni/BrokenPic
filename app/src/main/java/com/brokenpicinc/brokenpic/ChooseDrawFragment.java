@@ -52,6 +52,7 @@ public class ChooseDrawFragment extends Fragment {
             @Override
             public void onResult(List<String> games) {
                 gamesToGuessList.addAll(games);
+                adapter.refershData();
             }
 
             @Override

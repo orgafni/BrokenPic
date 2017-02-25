@@ -110,15 +110,71 @@ public class Model {
 
     }
 
-    public void advanceGame(GuessGame game, String guessWord)
+    public void advanceGame(final GuessGame guessGame, final String guessWord)
     {
         // TODO: find the game received in the DB, set the received guessWord as the current player guess.
-        modelFirebase.SetGuessToGame(game.getGameID(), game.getCurrTurnIndex(), guessWord);
+        modelFirebase.SetGuessToGame(guessGame.getGameID(), guessGame.getCurrTurnIndex(), guessWord);
 
         // TODO: remove the game from this player pending games.
-        modelFirebase.removePendingGame(game.getGameID());
+        modelFirebase.removePendingGame(guessGame.getGameID());
 
-        // TODO: if there is another player in this game, register the gameID to the pending game of the next player.
+        modelFirebase.getPlayersAmountInGame(guessGame.getGameID(), new GetNumericResultListener() {
+            @Override
+            public void onSuccess(int playersAmount) {
+                // if there is another player in this game, register the gameID to the pending game of the next player.
+                if (guessGame.getCurrTurnIndex() + 1 < playersAmount)
+                {
+                    modelFirebase.advancedGameTurnIndex(guessGame.getGameID(), guessGame.getCurrTurnIndex() + 1);
+                    modelFirebase.getPlayerInGameByIndex(guessGame.getGameID(), guessGame.getCurrTurnIndex() + 1, new ModelFirebase.GetMyTurnListener() {
+                        @Override
+                        public void onSuccess(playerInGame res) {
+                            String nextPlayerId = res.getPlayerID();
+                            modelFirebase.addGameToPendingListOfPlayer(guessGame.getGameID(), nextPlayerId, DrawType);
+                        }
+                        @Override
+                        public void onFail() {
+                        }
+                    });
+                }
+                // if this is the last turn of the game, register this game in the finishedGames of all the players that took part in this game.
+                else
+                {
+                    modelFirebase.getGameByGameId(guessGame.getGameID(), new ModelFirebase.GetGameListener() {
+                        @Override
+                        public void onSuccess(Game game) {
+                            String firstWordInChain = game.getPlayersInGame().get(0).getWord();
+                            String lastWordInChain = game.getPlayersInGame().get(game.getPlayersAmount()-1).getWord();
+
+                            Game.GameState newGameState;
+                            if (firstWordInChain.equals(lastWordInChain))
+                            {
+                                newGameState = Game.GameState.VICTORY;
+                            }
+                            else
+                            {
+                                newGameState = Game.GameState.FAILURE;
+                            }
+
+                            modelFirebase.updateGameState(guessGame.getGameID(), newGameState);
+                            modelFirebase.advancedGameTurnIndex(guessGame.getGameID(), 0);
+
+                            for (playerInGame pl: game.getPlayersInGame()) {
+                                modelFirebase.addGameToFinishedListOfPlayer(guessGame.getGameID(), pl.getPlayerID(), newGameState);
+                            }
+                        }
+
+                        @Override
+                        public void onFail() {
+
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onFail() {
+
+            }
+        });
         // TODO: if this is the last turn of the game, register this game in the finishedGames of all the players that took part in this game.
     }
 
