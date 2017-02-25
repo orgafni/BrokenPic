@@ -110,7 +110,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="75"
                     android:layout_height="match_parent"
-                    android:text="@string/your_guess"
+                    android:text=""
+                    android:hint="@string/your_guess"
                     android:background="@color/colorWhite"/>
                 <ImageButton
                     android:id="@+id/send_your_guess"
