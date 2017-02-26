@@ -209,7 +209,7 @@ public class Model {
     {
         if (nickname.isEmpty() || email.isEmpty() || pass.isEmpty() || confirmPass.isEmpty())
         {
-            listener.onFail("FWields cannot be blank");
+            listener.onFail("Fields cannot be blank");
             return false;
         }
         if (!pass.equals(confirmPass))

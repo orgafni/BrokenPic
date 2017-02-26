@@ -54,11 +54,18 @@ public class SignupFragment extends Fragment {
             public void onClick(View v) {
 //                ImagePicker.pickImage(getActivity(), "choose your image bro!");
                 Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(takePicture, TAKE_PICTURE);//zero can be replaced with any action code
+//                startActivityForResult(takePicture, TAKE_PICTURE);//zero can be replaced with any action code
 
-//                Intent pickPhoto = new Intent(Intent.ACIOTN_PICK,
-//                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                startActivityForResult(pickPhoto , CHOOSE_FROM_GALLERY);//one can be replaced with any action code
+//                Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+//                getIntent.setType("image/*");
+
+                Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickIntent.setType("image/*");
+
+                Intent chooserIntent = Intent.createChooser(pickIntent, "Select Image");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {takePicture});
+
+                startActivityForResult(chooserIntent, CHOOSE_FROM_GALLERY);
             }
         });
 
@@ -133,8 +140,17 @@ public class SignupFragment extends Fragment {
                 break;
             case CHOOSE_FROM_GALLERY:
                 if(resultCode == Activity.RESULT_OK){
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    profileImageBtn.setImageURI(selectedImage);
+                    if (imageReturnedIntent.getExtras() != null) {
+                        Bitmap photo = (Bitmap) imageReturnedIntent.getExtras().get("data");
+//                    Log.d("TAG", "selectedImage " + selectedImage.getPath());
+                        profileImageBtn.setImageBitmap(photo);
+                    }
+                    else
+                    {
+                        Uri selectedImage = imageReturnedIntent.getData();
+                        profileImageBtn.setImageURI(selectedImage);
+                    }
+
                 }
                 break;
         }
