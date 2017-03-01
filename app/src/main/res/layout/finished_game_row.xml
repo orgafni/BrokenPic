@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:id="@+id/chooseFinishedGameLayout"
+        android:background="@drawable/participant_row"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:weightSum="100">
+        <TextView
+            android:background="@drawable/participant_index_bg"
+            android:layout_width="0dp"
+            android:layout_weight="20"
+            android:layout_height="match_parent"
+            android:text="27/12/93\n18:23"
+            android:id="@+id/row_game_finished_time"
+            android:gravity="center"
+            android:textSize="14dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="60"
+            android:id="@+id/finished_game_row_participents"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+
+            <ImageView
+                android:layout_width="0dp"
+                android:src="@drawable/upload_photo_btn"
+                android:layout_height="match_parent"
+                android:layout_weight="33"
+                android:padding="3dp"/>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="33"
+                android:src="@drawable/upload_photo_btn"
+                android:padding="3dp"/>
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="33"
+                android:src="@drawable/upload_photo_btn"
+                android:padding="3dp"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/finishedGameStatus"
+            android:background="@drawable/finished_game_row_victory"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="20"
+            android:text="Dog"
+            android:textColor="@color/colorWhite"
+            android:gravity="center_horizontal"
+            android:textSize="14dp">
+
+
+        </TextView>
+
+
+    </LinearLayout>
+
+</LinearLayout>
+

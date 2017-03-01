@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.brokenpicinc.brokenpic.model.FinishedGame;
 import com.brokenpicinc.brokenpic.model.Model;
+import com.brokenpicinc.brokenpic.model.playerInGame;
 import com.brokenpicinc.brokenpic.utils.DialogInterrupter;
 
 import java.util.LinkedList;
@@ -102,11 +103,14 @@ public class ChooseFinishedGameFragment extends Fragment {
 
             final FinishedGame game = new FinishedGame();
             final String gameId = finishedGamesList.get(i);
+            game.setIndex(i + 1);
             Model.getInstance().getFinishedGameDetails(gameId, new Model.GetFinishedGameDetailsListener() {
                 @Override
-                public void onResult(String gameTime, List<String> participantsIDs, String startWord, boolean isVictory) {
-                    finishedTimeTextview.setText(gameTime);
+                public void onResult(String gameTime, final List<playerInGame> participants, String startWord, boolean isVictory) {
+                    game.setFinishTime(gameTime);
+                    game.setVictory(isVictory);
 
+                    finishedTimeTextview.setText(gameTime);
                     finishedGameStatusTextview.setText(startWord);
 
                     if (isVictory)
@@ -118,23 +122,26 @@ public class ChooseFinishedGameFragment extends Fragment {
                         finishedGameStatusTextview.setBackgroundResource(R.drawable.finished_game_row_failure);
                     }
 
-                    final int waitingImages = participantsIDs.size();
+                    final int waitingImages = participants.size();
 
-                    for (int i = 0; i < participantsIDs.size(); i++)
+                    for (int i = 0; i < participants.size(); i++)
                     {
+                        final String playerID = participants.get(i).getPlayerID();
+                        game.allocatePlayer(playerID);
                         final ImageView participantProfileImageview = new ImageView(context);
-                        participantProfileImageview.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 100/participantsIDs.size()));
+                        participantProfileImageview.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 100/participants.size()));
                         participantProfileImageview.setPadding(3,3,3,3);
                         participentsLayout.addView(participantProfileImageview);
 
-                        Model.getInstance().getPlayerProfileByUID(participantsIDs.get(i), new Model.GetImageListener() {
+                        Model.getInstance().getPlayerNameAndProfile(participants.get(i).getPlayerID(), new Model.GetPlayerNameAndProfile() {
                             @Override
-                            public void onSuccess(Bitmap image) {
+                            public void onResult(String playerName, Bitmap image) {
                                 participantProfileImageview.setImageBitmap(image);
+                                game.addPlayer(playerID, playerName, image, participants.get(0));
                             }
 
                             @Override
-                            public void onFail() {
+                            public void onCancel(String msg) {
 
                             }
                         });
@@ -156,7 +163,7 @@ public class ChooseFinishedGameFragment extends Fragment {
                     FinishedGameFlowFragment finishedGameFlowFragment = new FinishedGameFlowFragment();
                     finishedGameFlowFragment.setChosenGame(game);
                     FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                    ftr.replace(R.id.mainContainer, drawItFragment);
+                    ftr.replace(R.id.mainContainer, finishedGameFlowFragment);
                     ftr.commit();
                 }
             });

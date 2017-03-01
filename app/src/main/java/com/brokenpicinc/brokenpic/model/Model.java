@@ -40,6 +40,13 @@ public class Model {
         public void onCancel(String msg);
     }
 
+    public interface GetPlayerNameAndProfile{
+        public void onResult(String playerName, Bitmap playerProfile);
+        public void onCancel(String msg);
+    }
+
+
+
     public interface GetGamesListener {
         public void onResult(List<String> games);
         public void onCancel(String msg);
@@ -67,7 +74,7 @@ public class Model {
     }
 
     public interface GetFinishedGameDetailsListener{
-        void onResult(String gameTime, List<String> participantsIDs, String startWord, boolean isVictory);
+        void onResult(String gameTime, List<playerInGame> participants, String startWord, boolean isVictory);
         void onFail(String msg);
     }
 
@@ -248,12 +255,22 @@ public class Model {
         modelFirebase.getImage(profileUrl, listener);
     }
 
-    public void getPlayerProfileByUID(String playerID, final GetImageListener listener)
+    public void getPlayerNameAndProfile(String playerID, final GetPlayerNameAndProfile listener)
     {
         modelFirebase.getPlayerDetailsByPlayerID(playerID, new GetPlayerListener() {
             @Override
-            public void onResult(Player player) {
-                modelFirebase.getImage(player.getImage(), listener);
+            public void onResult(final Player player) {
+                modelFirebase.getImage(player.getImage(), new GetImageListener() {
+                    @Override
+                    public void onSuccess(Bitmap image) {
+                        listener.onResult(player.getName(), image);
+                    }
+
+                    @Override
+                    public void onFail() {
+
+                    }
+                });
             }
 
             @Override
@@ -369,7 +386,7 @@ public class Model {
                 {
                     isVictory = true;
                 }
-                listener.onResult("N/A\nN/A", playerIDs, game.getPlayersInGame().get(0).getWord(), isVictory);
+                listener.onResult("N/A\nN/A", game.getPlayersInGame(), game.getPlayersInGame().get(0).getWord(), isVictory);
             }
 
             @Override
@@ -378,56 +395,6 @@ public class Model {
             }
         });
 
-
-
-
-        modelFirebase.getGameTurnIndex(gameId, new GetNumericResultListener(){
-                    @Override
-                    public void onSuccess(final int nextTurnIndex) {
-                        modelFirebase.getPlayerInGameByIndex(gameId, nextTurnIndex - 1, new ModelFirebase.GetMyTurnListener()
-                        {
-                            @Override
-                            public void onSuccess(final playerInGame plInGame) {
-                                modelFirebase.getPlayerDetailsByPlayerID(plInGame.getPlayerID(), new GetPlayerListener(){
-                                    @Override
-                                    public void onResult(final Player player) {
-                                        modelFirebase.getImage(player.getImage(), new GetImageListener() {
-                                            @Override
-                                            public void onSuccess(final Bitmap profileImage) {
-                                                modelFirebase.getImage(plInGame.getPicturePath(), new GetImageListener() {
-                                                    @Override
-                                                    public void onSuccess(Bitmap pictureToGuess) {
-                                                        listener.onResult(profileImage, player.getName(), pictureToGuess, gameId, nextTurnIndex);
-                                                    }
-
-                                                    @Override
-                                                    public void onFail() {
-
-                                                    }
-                                                });
-
-                                            }
-
-                                            @Override
-                                            public void onFail() {
-                                            }
-                                        });
-                                    }
-                                    @Override
-                                    public void onCancel(String msg) {
-                                    }
-                                });
-                            }
-                            @Override
-                            public void onFail() {
-                            }
-                        });
-                    }
-                    @Override
-                    public void onFail() {
-                    }
-                }
-        );
     }
 
 }

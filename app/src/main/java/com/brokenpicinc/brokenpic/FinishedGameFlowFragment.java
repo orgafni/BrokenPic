@@ -22,7 +22,7 @@ public class FinishedGameFlowFragment extends Fragment {
 
     void setChosenGame(FinishedGame chosenGame)
     {
-        game = chosenGame
+        game = chosenGame;
     }
 
 
