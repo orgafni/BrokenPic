@@ -130,7 +130,7 @@ public class ModelFirebase {
         });
     }
 
-    public void getAllGamesToDrawAsync(final Model.GetAllGamesToDrawOrGuessListener listener){
+    public void getAllGamesToDrawAsync(final Model.GetGamesListener listener){
         Log.d(TAG, getCurrentUserID());
         DatabaseReference myRef = database.getReference("playerGames").child(getCurrentUserID()).child("pending");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -153,7 +153,7 @@ public class ModelFirebase {
         });
     }
 
-    public void getAllGamesToGuessAsync(final Model.GetAllGamesToDrawOrGuessListener listener){
+    public void getAllGamesToGuessAsync(final Model.GetGamesListener listener){
         Log.d(TAG, getCurrentUserID());
         DatabaseReference myRef = database.getReference("playerGames").child(getCurrentUserID()).child("pending");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -165,6 +165,27 @@ public class ModelFirebase {
                         String gameID = plSnapshot.getKey();
                         gameList.add(gameID);
                     }
+                }
+                listener.onResult(gameList);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onCancel("Connection error");
+            }
+        });
+    }
+
+    public void getAllFinishedGamesAsync(final Model.GetGamesListener listener){
+        Log.d(TAG, getCurrentUserID());
+        DatabaseReference myRef = database.getReference("playerGames").child(getCurrentUserID()).child("finished");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<String> gameList = new LinkedList<>();
+                for (DataSnapshot plSnapshot : dataSnapshot.getChildren()) {
+                    String gameID = plSnapshot.getKey();
+                    gameList.add(gameID);
                 }
                 listener.onResult(gameList);
             }

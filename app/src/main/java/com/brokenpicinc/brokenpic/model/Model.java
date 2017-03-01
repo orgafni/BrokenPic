@@ -1,6 +1,7 @@
 package com.brokenpicinc.brokenpic.model;
 
 import android.graphics.Bitmap;
+import android.widget.LinearLayout;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +40,7 @@ public class Model {
         public void onCancel(String msg);
     }
 
-    public interface GetAllGamesToDrawOrGuessListener {
+    public interface GetGamesListener {
         public void onResult(List<String> games);
         public void onCancel(String msg);
     }
@@ -65,6 +66,11 @@ public class Model {
         void onFail(String msg);
     }
 
+    public interface GetFinishedGameDetailsListener{
+        void onResult(String gameTime, List<String> participantsIDs, String startWord, boolean isVictory);
+        void onFail(String msg);
+    }
+
 
     private Model(){
         modelFirebase = new ModelFirebase();
@@ -78,12 +84,16 @@ public class Model {
         modelFirebase.getAllPlayersAsync(listener);
     }
 
-    public void getGamesToGuess(GetAllGamesToDrawOrGuessListener listener) {
+    public void getGamesToGuess(GetGamesListener listener) {
         modelFirebase.getAllGamesToGuessAsync(listener);
     }
 
-    public void getGamesToDraw(GetAllGamesToDrawOrGuessListener listener){
+    public void getGamesToDraw(GetGamesListener listener){
         modelFirebase.getAllGamesToDrawAsync(listener);
+    }
+
+    public void getAllFinishedGames(GetGamesListener listener){
+        modelFirebase.getAllFinishedGamesAsync(listener);
     }
 
     public void addPlayer(Player item){
@@ -233,9 +243,25 @@ public class Model {
         return true;
     }
 
-    public void getPlayerProfile(String profileUrl, GetImageListener listener)
+    public void getPlayerProfileByPath(String profileUrl, GetImageListener listener)
     {
         modelFirebase.getImage(profileUrl, listener);
+    }
+
+    public void getPlayerProfileByUID(String playerID, final GetImageListener listener)
+    {
+        modelFirebase.getPlayerDetailsByPlayerID(playerID, new GetPlayerListener() {
+            @Override
+            public void onResult(Player player) {
+                modelFirebase.getImage(player.getImage(), listener);
+            }
+
+            @Override
+            public void onCancel(String msg) {
+
+            }
+        });
+
     }
 
     public void getDrawGameDetails(final String gameId, final Model.GetDrawGameDetailsListener listener) {
@@ -326,4 +352,82 @@ public class Model {
                 }
         );
     }
+
+    public void getFinishedGameDetails(final String gameId, final GetFinishedGameDetailsListener listener){
+        modelFirebase.getGameByGameId(gameId, new ModelFirebase.GetGameListener() {
+            @Override
+            public void onSuccess(Game game) {
+
+                List<String> playerIDs = new LinkedList<String>();
+                for (playerInGame plInGame: game.getPlayersInGame())
+                {
+                    playerIDs.add(plInGame.getPlayerID());
+                }
+
+                boolean isVictory = false;
+                if (game.getGameState() == Game.GameState.VICTORY)
+                {
+                    isVictory = true;
+                }
+                listener.onResult("N/A\nN/A", playerIDs, game.getPlayersInGame().get(0).getWord(), isVictory);
+            }
+
+            @Override
+            public void onFail() {
+
+            }
+        });
+
+
+
+
+        modelFirebase.getGameTurnIndex(gameId, new GetNumericResultListener(){
+                    @Override
+                    public void onSuccess(final int nextTurnIndex) {
+                        modelFirebase.getPlayerInGameByIndex(gameId, nextTurnIndex - 1, new ModelFirebase.GetMyTurnListener()
+                        {
+                            @Override
+                            public void onSuccess(final playerInGame plInGame) {
+                                modelFirebase.getPlayerDetailsByPlayerID(plInGame.getPlayerID(), new GetPlayerListener(){
+                                    @Override
+                                    public void onResult(final Player player) {
+                                        modelFirebase.getImage(player.getImage(), new GetImageListener() {
+                                            @Override
+                                            public void onSuccess(final Bitmap profileImage) {
+                                                modelFirebase.getImage(plInGame.getPicturePath(), new GetImageListener() {
+                                                    @Override
+                                                    public void onSuccess(Bitmap pictureToGuess) {
+                                                        listener.onResult(profileImage, player.getName(), pictureToGuess, gameId, nextTurnIndex);
+                                                    }
+
+                                                    @Override
+                                                    public void onFail() {
+
+                                                    }
+                                                });
+
+                                            }
+
+                                            @Override
+                                            public void onFail() {
+                                            }
+                                        });
+                                    }
+                                    @Override
+                                    public void onCancel(String msg) {
+                                    }
+                                });
+                            }
+                            @Override
+                            public void onFail() {
+                            }
+                        });
+                    }
+                    @Override
+                    public void onFail() {
+                    }
+                }
+        );
+    }
+
 }

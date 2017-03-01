@@ -4,17 +4,13 @@ package com.brokenpicinc.brokenpic;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,7 +20,6 @@ import com.brokenpicinc.brokenpic.model.Model;
 import com.brokenpicinc.brokenpic.model.Player;
 import com.brokenpicinc.brokenpic.utils.DialogInterrupter;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -140,7 +135,7 @@ public class StartNewGameFragment extends Fragment {
             nameTv.setText(pl.getName());
             // Todo: set real user photo
 
-            Model.getInstance().getPlayerProfile(pl.getImage(), new Model.GetImageListener() {
+            Model.getInstance().getPlayerProfileByPath(pl.getImage(), new Model.GetImageListener() {
                 @Override
                 public void onSuccess(Bitmap image) {
                     imageView.setImageBitmap(image);

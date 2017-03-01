@@ -50,6 +50,19 @@ public class MenuFragment extends Fragment {
             }
         });
 
+        ImageButton ShowFinishedGamesBtn = (ImageButton) view.findViewById(R.id.show_finished_games);
+        ShowFinishedGamesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final ChooseFinishedGameFragment chooseFinishedGame = new ChooseFinishedGameFragment();
+                FragmentTransaction ftr = getFragmentManager().beginTransaction();
+                ftr.replace(R.id.mainContainer, chooseFinishedGame);
+                ftr.commit();
+            }
+        });
+
+
+
         return view;
     }
 

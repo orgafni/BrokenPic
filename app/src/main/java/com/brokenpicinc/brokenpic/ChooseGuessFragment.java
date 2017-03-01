@@ -48,7 +48,7 @@ public class ChooseGuessFragment extends Fragment {
         final GuessesAdapter adapter = new GuessesAdapter(getActivity());
         list.setAdapter(adapter);
 
-        Model.getInstance().getGamesToDraw(new Model.GetAllGamesToDrawOrGuessListener() {
+        Model.getInstance().getGamesToDraw(new Model.GetGamesListener() {
             @Override
             public void onResult(List<String> games) {
                 gamesToDrawList.addAll(games);
