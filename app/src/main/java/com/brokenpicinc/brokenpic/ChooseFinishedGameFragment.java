@@ -174,7 +174,7 @@ public class ChooseFinishedGameFragment extends Fragment {
 
         public final void refershData()
         {
-            final ListView list = (ListView) getActivity().findViewById(R.id.GamesToGuessListView);
+            final ListView list = (ListView) getActivity().findViewById(R.id.ChooseFinishedGameListView);
             ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
         }
 
