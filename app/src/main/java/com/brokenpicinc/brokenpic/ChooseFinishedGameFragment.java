@@ -126,18 +126,19 @@ public class ChooseFinishedGameFragment extends Fragment {
 
                     for (int i = 0; i < participants.size(); i++)
                     {
-                        final String playerID = participants.get(i).getPlayerID();
-                        game.allocatePlayer(playerID);
+                        final playerInGame currPlayerInGame = participants.get(i);
+                        game.allocatePlayer(currPlayerInGame.getPlayerID());
                         final ImageView participantProfileImageview = new ImageView(context);
                         participantProfileImageview.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 100/participants.size()));
                         participantProfileImageview.setPadding(3,3,3,3);
+
                         participentsLayout.addView(participantProfileImageview);
 
                         Model.getInstance().getPlayerNameAndProfile(participants.get(i).getPlayerID(), new Model.GetPlayerNameAndProfile() {
                             @Override
                             public void onResult(String playerName, Bitmap image) {
                                 participantProfileImageview.setImageBitmap(image);
-                                game.addPlayer(playerID, playerName, image, participants.get(0));
+                                game.addPlayer(currPlayerInGame.getPlayerID(), playerName, image, currPlayerInGame);
                             }
 
                             @Override

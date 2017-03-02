@@ -3,6 +3,8 @@ package com.brokenpicinc.brokenpic.model;
 import android.graphics.Bitmap;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Created by orgaf on 01/03/2017.
@@ -13,10 +15,10 @@ public class FinishedGame {
     String finishTime;
     boolean isVictory;
 
-    HashMap<String, PlayerInFinishedGame> players;
+    LinkedHashMap<String, PlayerInFinishedGame> players;
 
     public FinishedGame() {
-        players = new HashMap<>();
+        players = new LinkedHashMap<>();
     }
 
     public int getIndex() {
@@ -54,4 +56,9 @@ public class FinishedGame {
         this.players.get(playerID).setPlayerProfile(playerProfile);
         this.players.get(playerID).setPlInGame(plInGame);
     }
+
+    public LinkedHashMap<String, PlayerInFinishedGame> getPlayers() {
+        return players;
+    }
+
 }

@@ -250,7 +250,7 @@ public class Model {
         return true;
     }
 
-    public void getPlayerProfileByPath(String profileUrl, GetImageListener listener)
+    public void getImageByPath(String profileUrl, GetImageListener listener)
     {
         modelFirebase.getImage(profileUrl, listener);
     }
