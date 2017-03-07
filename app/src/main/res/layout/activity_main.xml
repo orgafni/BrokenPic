@@ -35,6 +35,15 @@
                     android:background="@color/colorGray"
                     android:fontFamily="sans-serif"
                     android:layout_height="30dp" />
+                <Button
+                    android:id="@+id/menuBth"
+                    android:layout_width="wrap_content"
+                    android:text="menu"
+                    android:textSize="15sp"
+                    android:background="@color/colorGray"
+                    android:fontFamily="sans-serif"
+                    android:layout_alignParentBottom="true"
+                    android:layout_height="30dp" />
                 <!-- TODO: why wrap content not worked good? -->
                 <ImageButton
                     android:id="@+id/SettingsBtn"
