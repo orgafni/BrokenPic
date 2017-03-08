@@ -88,9 +88,7 @@ public class DrawItFragment extends Fragment {
                 {
                     Model.getInstance().advanceGame(gameToDraw, playerDraw);
                     final MenuFragment menuFragment = new MenuFragment();
-                    FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                    ftr.replace(R.id.mainContainer,menuFragment);
-                    ftr.commit();
+                    MainActivity.MoveToFragment(menuFragment, false, true);
                 }
             }
         });

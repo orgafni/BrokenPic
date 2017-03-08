@@ -129,9 +129,7 @@ public class ChooseDrawFragment extends Fragment {
                 public void onClick(View v) {
                     GuessItFragment guessItFragment = new GuessItFragment();
                     guessItFragment.setChosenGame(game);
-                    FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                    ftr.replace(R.id.mainContainer,guessItFragment);
-                    ftr.commit();
+                    MainActivity.MoveToFragment(guessItFragment, true);
                 }
             });
 

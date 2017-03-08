@@ -163,9 +163,7 @@ public class ChooseFinishedGameFragment extends Fragment {
                 public void onClick(View v) {
                     FinishedGameFlowFragment finishedGameFlowFragment = new FinishedGameFlowFragment();
                     finishedGameFlowFragment.setChosenGame(game);
-                    FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                    ftr.replace(R.id.mainContainer, finishedGameFlowFragment);
-                    ftr.commit();
+                    MainActivity.MoveToFragment(finishedGameFlowFragment, true);
                 }
             });
 

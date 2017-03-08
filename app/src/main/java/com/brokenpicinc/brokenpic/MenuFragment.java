@@ -33,9 +33,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final StartNewGameFragment startNewGameFragment = new StartNewGameFragment();
-                FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                ftr.replace(R.id.mainContainer, startNewGameFragment);
-                ftr.commit();
+                MainActivity.MoveToFragment(startNewGameFragment, true);
             }
         });
 
@@ -44,9 +42,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final TakeTurnFragment takeTurnFragment = new TakeTurnFragment();
-                FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                ftr.replace(R.id.mainContainer, takeTurnFragment);
-                ftr.commit();
+                MainActivity.MoveToFragment(takeTurnFragment, true);
             }
         });
 
@@ -55,9 +51,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final ChooseFinishedGameFragment chooseFinishedGame = new ChooseFinishedGameFragment();
-                FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                ftr.replace(R.id.mainContainer, chooseFinishedGame);
-                ftr.commit();
+                MainActivity.MoveToFragment(chooseFinishedGame, true);
             }
         });
 

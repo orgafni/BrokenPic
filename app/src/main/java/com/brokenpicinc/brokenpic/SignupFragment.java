@@ -89,9 +89,7 @@ public class SignupFragment extends Fragment {
                     @Override
                     public void onSuccess() {
                         final MenuFragment menuFragment = new MenuFragment();
-                        FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                        ftr.replace(R.id.mainContainer,menuFragment);
-                        ftr.commit();
+                        MainActivity.MoveToFragment(menuFragment, false, true);
                     }
 
                     @Override

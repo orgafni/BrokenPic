@@ -35,6 +35,9 @@ public class StartNewGameFragment extends Fragment {
 
     public StartNewGameFragment() {
         // Required empty public constructor
+
+        playersList = new LinkedList<Player>();
+        chosenPlayersList = new LinkedList<Player>();
     }
 
     @Override
@@ -42,10 +45,6 @@ public class StartNewGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_start_new_game, container, false);
-
-        playersList = new LinkedList<Player>();
-
-        chosenPlayersList = new LinkedList<Player>();
 
         final ListView list = (ListView) view.findViewById(R.id.particpantsListListView);
         final PlayersAdapter adapter = new PlayersAdapter(getActivity());
@@ -73,9 +72,7 @@ public class StartNewGameFragment extends Fragment {
                 {
                     final ChooseWordFragment chooseWordFragment = new ChooseWordFragment();
                     chooseWordFragment.SetChosenPlayers(chosenPlayersList);
-                    FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                    ftr.replace(R.id.mainContainer, chooseWordFragment);
-                    ftr.commit();
+                    MainActivity.MoveToFragment(chooseWordFragment, true);
                 }
             }
         });
@@ -83,7 +80,10 @@ public class StartNewGameFragment extends Fragment {
         Model.getInstance().getAllPlayers(new Model.GetAllPlayersListener() {
             @Override
             public void onResult(List<Player> players) {
-                playersList.addAll(players);
+                if (playersList.size() == 0)
+                {
+                    playersList.addAll(players);
+                }
                 adapter.refershData();
             }
 
@@ -187,8 +187,10 @@ public class StartNewGameFragment extends Fragment {
         }
         public final void refershData()
         {
-            final ListView list = (ListView) getActivity().findViewById(R.id.particpantsListListView);
-            ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
+            if (isVisible()) {
+                final ListView list = (ListView) getActivity().findViewById(R.id.particpantsListListView);
+                ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
+            }
         }
 
     }

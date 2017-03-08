@@ -32,9 +32,7 @@ public class TakeTurnFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final ChooseDrawFragment chooseDrawFragment = new ChooseDrawFragment();
-                FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                ftr.replace(R.id.mainContainer, chooseDrawFragment);
-                ftr.commit();
+                MainActivity.MoveToFragment(chooseDrawFragment, true, false);
             }
         });
 
@@ -43,9 +41,7 @@ public class TakeTurnFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final ChooseGuessFragment chooseGuessFragment = new ChooseGuessFragment();
-                FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                ftr.replace(R.id.mainContainer, chooseGuessFragment);
-                ftr.commit();
+                MainActivity.MoveToFragment(chooseGuessFragment, true, false);
             }
         });
 

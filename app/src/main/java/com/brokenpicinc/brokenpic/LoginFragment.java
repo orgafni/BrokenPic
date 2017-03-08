@@ -30,7 +30,7 @@ public class LoginFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
@@ -49,9 +49,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onSuccess() {
                         final MenuFragment menuFragment = new MenuFragment();
-                        FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                        ftr.replace(R.id.mainContainer, menuFragment);
-                        ftr.commit();
+                        MainActivity.MoveToFragment(menuFragment, false, true);
                     }
 
                     @Override
@@ -70,9 +68,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final SignupFragment signupFragment = new SignupFragment();
-                FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                ftr.replace(R.id.mainContainer,signupFragment);
-                ftr.commit();
+                MainActivity.MoveToFragment(signupFragment, true, false);
             }
         });
 
