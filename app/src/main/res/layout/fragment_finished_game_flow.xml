@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="65"
+                android:layout_weight="70"
                 android:text="Finished game No. "
                 android:textSize="20dp"
                 android:textAlignment="textEnd"
@@ -31,16 +31,16 @@
                 android:id="@+id/finish_game_number_textview"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="35"
+                android:layout_weight="30"
                 android:textSize="20dp"
-                android:text="543"
+                android:text="2"
                 />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="90"
+            android:layout_weight="70"
             android:orientation="horizontal"
             android:weightSum="100"
             android:gravity="center_horizontal"
@@ -58,6 +58,15 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <ImageView
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:adjustViewBounds="true"
+            android:src="@drawable/victory_banner"
+            android:id="@+id/game_state_banner" />
 
     </LinearLayout>
 

@@ -3,6 +3,7 @@ package com.brokenpicinc.brokenpic;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Display;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.brokenpicinc.brokenpic.model.FinishedGame;
 import com.brokenpicinc.brokenpic.model.Model;
 import com.brokenpicinc.brokenpic.model.ModelFirebase;
+import com.brokenpicinc.brokenpic.model.Player;
 import com.brokenpicinc.brokenpic.model.PlayerInFinishedGame;
 
 import org.w3c.dom.Text;
@@ -44,9 +46,20 @@ public class FinishedGameFlowFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_finished_game_flow, container, false);
 
+        ImageView gameStateBanner = (ImageView)view.findViewById(R.id.game_state_banner);
         TextView finishGameNumberTextView = (TextView) view.findViewById(R.id.finish_game_number_textview);
         finishGameNumberTextView.setText(Integer.toString(game.getIndex()));
         LinearLayout finishGameContainerLayout = (LinearLayout) view.findViewById(R.id.finished_game_flow_container_layout);
+
+        if (game.isVictory())
+        {
+            gameStateBanner.setImageResource(R.drawable.victory_banner);
+        }
+        else
+        {
+            gameStateBanner.setImageResource(R.drawable.failure_banner3);
+        }
+
         float totalContainerWeight = 1000;
         finishGameContainerLayout.setWeightSum(totalContainerWeight);
 
@@ -128,6 +141,7 @@ public class FinishedGameFlowFragment extends Fragment {
             }
         }
         finishGameContainerLayout.setVisibility(View.VISIBLE);
+        gameStateBanner.setVisibility(View.VISIBLE);
 
         return view;
     }
