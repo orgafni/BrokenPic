@@ -137,9 +137,13 @@ public class ChooseGuessFragment extends Fragment {
 
         public final void refershData()
         {
-            final ListView list = (ListView) getActivity().findViewById(R.id.GamesToGuessListView);
-            ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
+            if (isVisible())
+            {
+                final ListView list = (ListView) getActivity().findViewById(R.id.GamesToGuessListView);
+                ((BaseAdapter)list.getAdapter()).notifyDataSetChanged();
+            }
         }
+
 
     }
 }
