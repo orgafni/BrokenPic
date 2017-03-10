@@ -57,7 +57,7 @@ public class FinishedGameFlowFragment extends Fragment {
         }
         else
         {
-            gameStateBanner.setImageResource(R.drawable.failure_banner3);
+            gameStateBanner.setImageResource(R.drawable.failure_banner);
         }
 
         float totalContainerWeight = 1000;
@@ -85,6 +85,7 @@ public class FinishedGameFlowFragment extends Fragment {
             ImageView profilePhotoImageView = new ImageView(getActivity());
             profilePhotoImageView.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 50));
             profilePhotoImageView.setImageBitmap(playerInFinishedGame.getPlayerProfile());
+            profilePhotoImageView.setPadding(3,3,3,3);
 
             realRowLayout.addView(profilePhotoImageView);
 
@@ -102,7 +103,7 @@ public class FinishedGameFlowFragment extends Fragment {
             else
             {
                 wordOrPictureView = new ImageView(getActivity());
-
+                wordOrPictureView.setPadding(3,3,3,3);
                 Model.getInstance().getImageByPath(playerInFinishedGame.getPlInGame().getPicturePath(), new Model.GetImageListener() {
                     @Override
                     public void onSuccess(Bitmap image) {
