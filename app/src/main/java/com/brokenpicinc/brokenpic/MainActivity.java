@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -40,27 +41,38 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        Log.d("stack", "onBackPressed before: " + fragmentManager.getBackStackEntryCount());
+
         if (getFragmentManager().getBackStackEntryCount() > 0 ){
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
         }
+
+        Log.d("stack", "onBackPressed before: " + fragmentManager.getBackStackEntryCount());
+
     }
 
     static void MoveToFragment(Fragment newFrag, boolean isNeedToSaveCurrFrag, boolean clearBackStack)
     {
+        Log.d("stack", "MoveToFragment before: " + fragmentManager.getBackStackEntryCount());
         if (clearBackStack)
         {
             clearBackstack();
         }
 
         FragmentTransaction ftr = fragmentManager.beginTransaction();
+        ftr.setCustomAnimations(R.animator.enter_from_left, R.animator.exit_to_left, R.animator.enter_from_right, R.animator.exit_to_right);
         ftr.replace(R.id.mainContainer, newFrag);
         if (isNeedToSaveCurrFrag)
         {
+            Log.d("stack", "MoveToFragment saving: " + newFrag.getClass().getName());
             ftr.addToBackStack(newFrag.getClass().getName());
         }
         ftr.commit();
+
+        Log.d("stack", "MoveToFragment after: " + fragmentManager.getBackStackEntryCount());
+
     }
 
     static void MoveToFragment(Fragment newFrag, boolean isNeedToSaveCurrFrag)
