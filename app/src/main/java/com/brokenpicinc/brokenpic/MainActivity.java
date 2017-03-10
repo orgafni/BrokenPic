@@ -28,17 +28,6 @@ public class MainActivity extends Activity {
         ftr.add(R.id.mainContainer,loginFragment);
         ftr.commit();
 
-        Button menuBtn = (Button) findViewById(R.id.menuBth);
-        menuBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final MenuFragment menuFragment = new MenuFragment();
-                FragmentTransaction ftr = getFragmentManager().beginTransaction();
-                ftr.add(R.id.mainContainer,menuFragment);
-                ftr.commit();
-            }
-        });
-
         Button backBtn = (Button) findViewById(R.id.NavigateBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
