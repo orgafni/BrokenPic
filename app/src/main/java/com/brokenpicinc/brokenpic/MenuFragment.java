@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import com.brokenpicinc.brokenpic.model.Model;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -55,8 +57,7 @@ public class MenuFragment extends Fragment {
             }
         });
 
-
-
+        Model.getInstance().LoadData();
         return view;
     }
 

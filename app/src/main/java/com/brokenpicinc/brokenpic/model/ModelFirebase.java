@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -73,7 +74,7 @@ public class ModelFirebase {
                     uploadImage(profilePhoto, profilePath);
 
                     Player pl = new Player(nickName, profilePath);
-                    database.getReference("Players").child(currentUser.getUid()).setValue(pl);
+                    database.getReference("Players").child(currentUser.getUid()).setValue(pl.toMap());
 
                     listener.onSuccess();
 
@@ -84,6 +85,7 @@ public class ModelFirebase {
 
     public void loginUser(String email, String password, final Model.LoginUserListener listener)
     {
+        Log.d("TAG", "about to sign in user");
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -102,12 +104,14 @@ public class ModelFirebase {
                 }
             }
         });
+        Log.d("TAG", "after signin");
     }
 
-    public void getAllPlayersAsync(final Model.GetAllPlayersListener listener){
+    public void getAllPlayersAsync(double lastUpdateDate, final Model.GetAllPlayersListener listener){
 
         DatabaseReference myRef = database.getReference("Players");
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        Query query = myRef.orderByChild("lastUpdated").startAt(lastUpdateDate);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final List<Player> plList = new LinkedList<Player>();

@@ -1,6 +1,7 @@
 package com.brokenpicinc.brokenpic.model;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import java.util.LinkedList;
@@ -13,6 +14,9 @@ import java.util.List;
 public class Model {
     private final static Model instance = new Model();
     ModelFirebase modelFirebase;
+    ModelSql modelSql;
+    boolean isLoaded;
+
     final public static String DrawType = "Draw";
     final public static String GuessType = "Guess";
 
@@ -81,6 +85,8 @@ public class Model {
 
     private Model(){
         modelFirebase = new ModelFirebase();
+        modelSql = new ModelSql();
+        isLoaded = false;
     }
 
     public static Model getInstance(){
@@ -88,7 +94,38 @@ public class Model {
     }
 
     public void getAllPlayers(GetAllPlayersListener listener){
-        modelFirebase.getAllPlayersAsync(listener);
+        // get the last update date
+        final double lastUpdateDate = modelSql.getPlayersLastUpdateDate();
+
+        // get all players records that where updated since last update date
+        modelFirebase.getAllPlayersAsync(lastUpdateDate, new GetAllPlayersListener() {
+                    @Override
+                    public void onResult(List<Player> players) {
+                        if (players != null && players.size() > 0)
+                        {
+                            // update the local DB
+                            double recentUpdate = lastUpdateDate;
+                            for (Player pl: players) {
+                                modelSql.addPlayer(pl);
+                                if (pl.getLastUpdated() > recentUpdate) {
+                                    recentUpdate = pl.getLastUpdated();
+                                }
+                                Log.d("TAG","updating: " + pl.getName());
+                            }
+                            modelSql.setPlayersLastUpdateDate(recentUpdate);
+                        }
+                    }
+
+                    @Override
+                    public void onCancel(String msg) {
+
+                    }
+                });
+
+                //return the complete players list to the caller
+                modelSql.getAllPlayers();
+                List<Player> res =  modelSql.getAllPlayers();
+                listener.onResult(res);
     }
 
     public void getGamesToGuess(GetGamesListener listener) {
@@ -395,6 +432,14 @@ public class Model {
             }
         });
 
+    }
+
+    public void LoadData()
+    {
+//        if (!isLoaded)
+//        {
+//            modelFirebase.GetAll
+//        }
     }
 
 }
