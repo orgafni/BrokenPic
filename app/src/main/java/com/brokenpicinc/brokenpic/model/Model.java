@@ -93,9 +93,11 @@ public class Model {
         return instance;
     }
 
-    public void getAllPlayers(GetAllPlayersListener listener){
+    public void getAllPlayers(final GetAllPlayersListener listener){
+        Log.d("TAG", "getAllPlayers START ");
         // get the last update date
         final double lastUpdateDate = modelSql.getPlayersLastUpdateDate();
+        Log.d("TAG", "getAllPlayers lastUpdateDate = " + String.valueOf(lastUpdateDate));
 
         // get all players records that where updated since last update date
         modelFirebase.getAllPlayersAsync(lastUpdateDate, new GetAllPlayersListener() {
@@ -103,6 +105,8 @@ public class Model {
                     public void onResult(List<Player> players) {
                         if (players != null && players.size() > 0)
                         {
+                            Log.d("TAG", "got players from remote: " + players.size());
+
                             // update the local DB
                             double recentUpdate = lastUpdateDate;
                             for (Player pl: players) {
@@ -114,6 +118,16 @@ public class Model {
                             }
                             modelSql.setPlayersLastUpdateDate(recentUpdate);
                         }
+                        else
+                        {
+                            Log.d("TAG", "not get any player from remote");
+                        }
+
+                        //return the complete players list to the caller
+                        modelSql.getAllPlayers();
+                        List<Player> res =  modelSql.getAllPlayers();
+                        Log.d("TAG", "local all players size = " + res.size());
+                        listener.onResult(res);
                     }
 
                     @Override
@@ -121,11 +135,6 @@ public class Model {
 
                     }
                 });
-
-                //return the complete players list to the caller
-                modelSql.getAllPlayers();
-                List<Player> res =  modelSql.getAllPlayers();
-                listener.onResult(res);
     }
 
     public void getGamesToGuess(GetGamesListener listener) {

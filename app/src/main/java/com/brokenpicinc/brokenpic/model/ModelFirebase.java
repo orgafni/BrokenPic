@@ -110,7 +110,7 @@ public class ModelFirebase {
     public void getAllPlayersAsync(double lastUpdateDate, final Model.GetAllPlayersListener listener){
 
         DatabaseReference myRef = database.getReference("Players");
-        Query query = myRef.orderByChild("lastUpdated").startAt(lastUpdateDate);
+        Query query = myRef.orderByChild("lastUpdated").startAt(lastUpdateDate + 1);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
