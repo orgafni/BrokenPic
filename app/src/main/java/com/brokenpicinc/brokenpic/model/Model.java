@@ -445,10 +445,23 @@ public class Model {
 
     public void LoadData()
     {
-//        if (!isLoaded)
-//        {
-//            modelFirebase.GetAll
-//        }
+
+        if (!isLoaded)
+        {
+            getAllPlayers(new GetAllPlayersListener() {
+                @Override
+                public void onResult(List<Player> players) {
+
+                }
+
+                @Override
+                public void onCancel(String msg) {
+
+                }
+            });
+
+            isLoaded = true;
+        }
     }
 
 }
