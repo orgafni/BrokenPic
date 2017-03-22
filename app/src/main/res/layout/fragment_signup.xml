@@ -50,6 +50,7 @@
                         android:layout_height="0dp"
                         android:hint="@string/nickname"
                         android:text=""
+                        android:textSize="17dp"
                         android:background="@color/colorWhite"/>
 
                     <EditText
@@ -59,6 +60,7 @@
                         android:layout_weight="25"
                         android:layout_height="0dp"
                         android:hint="@string/email"
+                        android:textSize="17dp"
                         android:text=""
                         android:background="@color/colorWhite"/>
                     <EditText
@@ -69,6 +71,8 @@
                         android:layout_height="0dp"
                         android:hint="@string/password"
                         android:text=""
+                        android:textSize="17dp"
+                        android:inputType="numberPassword"
                         android:background="@color/colorWhite"/>
                     <EditText
                         style="@style/PaddingTopStyle"
@@ -77,7 +81,9 @@
                         android:layout_weight="25"
                         android:layout_height="0dp"
                         android:hint="@string/confirmPassword"
+                        android:inputType="numberPassword"
                         android:text=""
+                        android:textSize="17dp"
                         android:background="@color/colorWhite"/>
 
                 </LinearLayout>

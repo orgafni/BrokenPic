@@ -89,7 +89,7 @@ public class SignupFragment extends Fragment {
                     @Override
                     public void onSuccess() {
                         final MenuFragment menuFragment = new MenuFragment();
-                        MainActivity.MoveToFragment(menuFragment, false, true);
+                        MainActivity.MoveToFragment(menuFragment, false, true, SignupFragment.class.getName());
                     }
 
                     @Override

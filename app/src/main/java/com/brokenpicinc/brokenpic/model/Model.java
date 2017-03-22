@@ -445,7 +445,6 @@ public class Model {
 
     public void LoadData()
     {
-
         if (!isLoaded)
         {
             getAllPlayers(new GetAllPlayersListener() {
@@ -463,5 +462,4 @@ public class Model {
             isLoaded = true;
         }
     }
-
 }

@@ -72,7 +72,7 @@ public class StartNewGameFragment extends Fragment {
                 {
                     final ChooseWordFragment chooseWordFragment = new ChooseWordFragment();
                     chooseWordFragment.SetChosenPlayers(chosenPlayersList);
-                    MainActivity.MoveToFragment(chooseWordFragment, true);
+                    MainActivity.MoveToFragment(chooseWordFragment, true, StartNewGameFragment.class.getName());
                 }
             }
         });

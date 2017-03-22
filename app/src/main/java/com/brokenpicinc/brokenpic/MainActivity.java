@@ -14,6 +14,7 @@ import com.mvc.imagepicker.ImagePicker;
 
 public class MainActivity extends Activity {
     static FragmentManager fragmentManager;
+    static Button backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +30,15 @@ public class MainActivity extends Activity {
         ftr.add(R.id.mainContainer,loginFragment);
         ftr.commit();
 
-        Button backBtn = (Button) findViewById(R.id.NavigateBtn);
-        backBtn.setOnClickListener(new View.OnClickListener() {
+        backButton = (Button) findViewById(R.id.NavigateBtn);
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+
+        backButton.setVisibility(View.INVISIBLE);
 
     }
 
@@ -44,6 +47,8 @@ public class MainActivity extends Activity {
         Log.d("stack", "onBackPressed before: " + fragmentManager.getBackStackEntryCount());
 
         if (getFragmentManager().getBackStackEntryCount() > 0 ){
+            String tag = getFragmentManager().getBackStackEntryAt(getFragmentManager().getBackStackEntryCount() - 1).getName();
+            changeBackBtnVisibility(tag);
             getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
@@ -53,7 +58,7 @@ public class MainActivity extends Activity {
 
     }
 
-    static void MoveToFragment(Fragment newFrag, boolean isNeedToSaveCurrFrag, boolean clearBackStack)
+    static void MoveToFragment(Fragment newFrag, boolean isNeedToSaveCurrFrag, boolean clearBackStack, String tag)
     {
         Log.d("stack", "MoveToFragment before: " + fragmentManager.getBackStackEntryCount());
         if (clearBackStack)
@@ -67,17 +72,19 @@ public class MainActivity extends Activity {
         if (isNeedToSaveCurrFrag)
         {
             Log.d("stack", "MoveToFragment saving: " + newFrag.getClass().getName());
-            ftr.addToBackStack(newFrag.getClass().getName());
+            ftr.addToBackStack(tag);
         }
         ftr.commit();
 
         Log.d("stack", "MoveToFragment after: " + fragmentManager.getBackStackEntryCount());
 
+        changeBackBtnVisibility(newFrag.getClass().getName());
+
     }
 
-    static void MoveToFragment(Fragment newFrag, boolean isNeedToSaveCurrFrag)
+    static void MoveToFragment(Fragment newFrag, boolean isNeedToSaveCurrFrag, String tag)
     {
-        MoveToFragment(newFrag, isNeedToSaveCurrFrag, false);
+        MoveToFragment(newFrag, isNeedToSaveCurrFrag, false, tag);
     }
 
     public static void clearBackstack() {
@@ -90,6 +97,19 @@ public class MainActivity extends Activity {
                     FragmentManager.POP_BACK_STACK_INCLUSIVE);
             fragmentManager.executePendingTransactions();
         }
+    }
 
+    public static void changeBackBtnVisibility(String tag)
+    {
+        if (tag.equals(MenuFragment.class.getName()) ||
+            tag.equals(SignupFragment.class.getName()) ||
+            tag.equals(LoginFragment.class.getName()))
+        {
+            backButton.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            backButton.setVisibility(View.VISIBLE);
+        }
     }
 }

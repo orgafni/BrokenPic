@@ -62,7 +62,7 @@ public class GuessItFragment extends Fragment {
 
 
                     final MenuFragment menuFragment = new MenuFragment();
-                    MainActivity.MoveToFragment(menuFragment, false, true);
+                    MainActivity.MoveToFragment(menuFragment, false, true, GuessItFragment.class.getName());
                 }
             }
         });

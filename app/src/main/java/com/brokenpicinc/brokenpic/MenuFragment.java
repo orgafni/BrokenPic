@@ -5,7 +5,9 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -35,7 +37,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final StartNewGameFragment startNewGameFragment = new StartNewGameFragment();
-                MainActivity.MoveToFragment(startNewGameFragment, true);
+                MainActivity.MoveToFragment(startNewGameFragment, true, MenuFragment.class.getName());
             }
         });
 
@@ -44,7 +46,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final TakeTurnFragment takeTurnFragment = new TakeTurnFragment();
-                MainActivity.MoveToFragment(takeTurnFragment, true);
+                MainActivity.MoveToFragment(takeTurnFragment, true, MenuFragment.class.getName());
             }
         });
 
@@ -53,11 +55,12 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final ChooseFinishedGameFragment chooseFinishedGame = new ChooseFinishedGameFragment();
-                MainActivity.MoveToFragment(chooseFinishedGame, true);
+                MainActivity.MoveToFragment(chooseFinishedGame, true, MenuFragment.class.getName());
             }
         });
 
         Model.getInstance().LoadData();
+
         return view;
     }
 

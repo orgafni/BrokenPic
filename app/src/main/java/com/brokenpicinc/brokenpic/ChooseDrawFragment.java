@@ -129,7 +129,7 @@ public class ChooseDrawFragment extends Fragment {
                 public void onClick(View v) {
                     GuessItFragment guessItFragment = new GuessItFragment();
                     guessItFragment.setChosenGame(game);
-                    MainActivity.MoveToFragment(guessItFragment, true);
+                    MainActivity.MoveToFragment(guessItFragment, true, ChooseDrawFragment.class.getName());
                 }
             });
 

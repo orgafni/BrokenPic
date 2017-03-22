@@ -49,7 +49,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onSuccess() {
                         final MenuFragment menuFragment = new MenuFragment();
-                        MainActivity.MoveToFragment(menuFragment, false, true);
+                        MainActivity.MoveToFragment(menuFragment, false, true, LoginFragment.class.getName());
                     }
 
                     @Override
@@ -68,7 +68,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final SignupFragment signupFragment = new SignupFragment();
-                MainActivity.MoveToFragment(signupFragment, true, false);
+                MainActivity.MoveToFragment(signupFragment, true, false, LoginFragment.class.getName());
             }
         });
 

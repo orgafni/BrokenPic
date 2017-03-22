@@ -55,7 +55,7 @@ public class ChooseWordFragment extends Fragment {
                     Model.getInstance().createNewGame(chosenWord, chosenPlayers);
 
                     final MenuFragment menuFragment = new MenuFragment();
-                    MainActivity.MoveToFragment(menuFragment, false, true);
+                    MainActivity.MoveToFragment(menuFragment, false, true, ChooseWordFragment.class.getName());
                 }
             }
         });

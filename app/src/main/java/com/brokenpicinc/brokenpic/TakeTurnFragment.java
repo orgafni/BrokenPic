@@ -32,7 +32,7 @@ public class TakeTurnFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final ChooseDrawFragment chooseDrawFragment = new ChooseDrawFragment();
-                MainActivity.MoveToFragment(chooseDrawFragment, true, false);
+                MainActivity.MoveToFragment(chooseDrawFragment, true, false, TakeTurnFragment.class.getName());
             }
         });
 
@@ -41,7 +41,7 @@ public class TakeTurnFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final ChooseGuessFragment chooseGuessFragment = new ChooseGuessFragment();
-                MainActivity.MoveToFragment(chooseGuessFragment, true, false);
+                MainActivity.MoveToFragment(chooseGuessFragment, true, false, TakeTurnFragment.class.getName());
             }
         });
 

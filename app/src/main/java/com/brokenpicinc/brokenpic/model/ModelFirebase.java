@@ -111,9 +111,12 @@ public class ModelFirebase {
 
         DatabaseReference myRef = database.getReference("Players");
         Query query = myRef.orderByChild("lastUpdated").startAt(lastUpdateDate + 1);
+        Log.d("TAG", "before addListenerForSingleValueEvent");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d("TAG", "addListenerForSingleValueEvent:onDataChange");
+
                 final List<Player> plList = new LinkedList<Player>();
                 for (DataSnapshot plSnapshot : dataSnapshot.getChildren()) {
                     Player pl = plSnapshot.getValue(Player.class);
@@ -124,6 +127,8 @@ public class ModelFirebase {
                         plList.add(pl);
                     }
                 }
+                Log.d("TAG", "addListenerForSingleValueEvent:before  listener.onResult(plList);");
+
                 listener.onResult(plList);
             }
 

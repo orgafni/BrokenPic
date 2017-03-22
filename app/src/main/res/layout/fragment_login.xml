@@ -20,76 +20,86 @@
             />
 
         <LinearLayout
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal"
-            android:weightSum="100">
-            <EditText
-                android:id="@+id/login_email_edittext"
-                android:layout_width="0dp"
-                android:layout_weight="75"
-                android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:text="omer@gmail.com"
-                android:background="@color/colorWhite"/>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_marginTop="2dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal"
-            android:weightSum="100">
-            <EditText
-                android:id="@+id/login_password_edittext"
-                android:layout_width="0dp"
-                android:layout_weight="75"
-                android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:text="Aa123456"
-                android:background="@color/colorWhite"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal"
-            android:weightSum="100">
-            <ImageButton
-                android:id="@+id/login_continue_btn"
-                android:layout_width="0dp"
-                android:layout_weight="75"
-                android:layout_height="wrap_content"
-                android:src="@drawable/continue_btn"
-                android:background="@null"
-                />
-        </LinearLayout>
-
-        <LinearLayout
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_height="0dp"
+            android:layout_weight="80"
+            android:orientation="vertical"
             android:gravity="center_horizontal"
             android:weightSum="100">
-            <TextView
-                android:id="@+id/login_singup_link"
-                android:gravity="center_horizontal"
-                android:layout_width="0dp"
-                android:layout_weight="75"
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/signup_link"
-                android:clickable="true"
-                android:textStyle="bold"
-                />
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:weightSum="100">
+                <EditText
+                    android:id="@+id/login_email_edittext"
+                    android:layout_width="0dp"
+                    android:layout_weight="75"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email"
+                    android:text="omer@gmail.com"
+                    android:background="@color/colorWhite"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:weightSum="100">
+                <EditText
+                    android:id="@+id/login_password_edittext"
+                    android:layout_width="0dp"
+                    android:layout_weight="75"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    android:text="Aa123456"
+                    android:inputType="numberPassword"
+                    android:background="@color/colorWhite"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:weightSum="100">
+                <ImageButton
+                    android:id="@+id/login_continue_btn"
+                    android:layout_width="0dp"
+                    android:layout_weight="75"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/continue_btn"
+                    android:background="@null"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:weightSum="100">
+                <TextView
+                    android:id="@+id/login_singup_link"
+                    android:gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="75"
+                    android:layout_height="wrap_content"
+                    android:text="@string/signup_link"
+                    android:clickable="true"
+                    android:textStyle="bold"
+                    />
+            </LinearLayout>
+
         </LinearLayout>
-
     </LinearLayout>
-
-
 </FrameLayout>

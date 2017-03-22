@@ -163,7 +163,7 @@ public class ChooseFinishedGameFragment extends Fragment {
                 public void onClick(View v) {
                     FinishedGameFlowFragment finishedGameFlowFragment = new FinishedGameFlowFragment();
                     finishedGameFlowFragment.setChosenGame(game);
-                    MainActivity.MoveToFragment(finishedGameFlowFragment, true);
+                    MainActivity.MoveToFragment(finishedGameFlowFragment, true, ChooseFinishedGameFragment.class.getName());
                 }
             });
 
