@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
                     android:text="Aa123456"
-                    android:inputType="numberPassword"
+                    android:inputType="textPassword"
                     android:background="@color/colorWhite"/>
             </LinearLayout>
 

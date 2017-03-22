@@ -55,15 +55,6 @@
 
                     <ImageButton
                         style="@style/MenuPaddingTopStyle"
-                        android:id="@+id/follow_your_opened_games_btn"
-                        android:layout_width="match_parent"
-                        android:layout_weight="25"
-                        android:layout_height="0dp"
-                        android:src="@drawable/follow_your_opened_games_btn"
-                        android:background="@color/colorWhite"/>
-
-                    <ImageButton
-                        style="@style/MenuPaddingTopStyle"
                         android:id="@+id/show_finished_games"
                         android:layout_width="match_parent"
                         android:layout_weight="25"
@@ -71,6 +62,15 @@
                         android:src="@drawable/show_finished_games"
                         android:background="@color/colorWhite"/>
 
+                    <ImageButton
+                        android:visibility="invisible"
+                        style="@style/MenuPaddingTopStyle"
+                        android:id="@+id/follow_your_opened_games_btn"
+                        android:layout_width="match_parent"
+                        android:layout_weight="25"
+                        android:layout_height="0dp"
+                        android:src="@drawable/follow_your_opened_games_btn"
+                        android:background="@color/colorWhite"/>
 
                 </LinearLayout>
 
