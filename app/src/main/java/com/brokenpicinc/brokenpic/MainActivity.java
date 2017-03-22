@@ -102,7 +102,6 @@ public class MainActivity extends Activity {
     public static void changeBackBtnVisibility(String tag)
     {
         if (tag.equals(MenuFragment.class.getName()) ||
-            tag.equals(SignupFragment.class.getName()) ||
             tag.equals(LoginFragment.class.getName()))
         {
             backButton.setVisibility(View.INVISIBLE);
