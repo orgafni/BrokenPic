@@ -18,7 +18,7 @@ public class LastUpdateSql {
                 LAST_UPDATE_TABLE_TNAME + " TEXT PRIMARY KEY," +
                 LAST_UPDATE_TABLE_DATE + " NUMERIC);" );
     }
-    public static void drop(SQLiteDatabase db) {
+    public static void dropTable(SQLiteDatabase db) {
         db.execSQL("drop table " + LAST_UPDATE_TABLE + ";");
     }
 

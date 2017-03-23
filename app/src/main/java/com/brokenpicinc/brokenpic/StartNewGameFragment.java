@@ -135,7 +135,7 @@ public class StartNewGameFragment extends Fragment {
             nameTv.setText(pl.getName());
             // Todo: set real user photo
 
-            Model.getInstance().getImageByPath(pl.getImage(), new Model.GetImageListener() {
+            Model.getInstance().getPlayerProfile(pl.getUniqueID(), new Model.GetImageListener() {
                 @Override
                 public void onSuccess(Bitmap image) {
                     imageView.setImageBitmap(image);

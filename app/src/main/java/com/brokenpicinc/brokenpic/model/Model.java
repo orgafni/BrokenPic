@@ -2,7 +2,6 @@ package com.brokenpicinc.brokenpic.model;
 
 import android.graphics.Bitmap;
 import android.util.Log;
-import android.widget.LinearLayout;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -109,12 +108,23 @@ public class Model {
 
                             // update the local DB
                             double recentUpdate = lastUpdateDate;
-                            for (Player pl: players) {
+                            for (final Player pl: players) {
                                 modelSql.addPlayer(pl);
                                 if (pl.getLastUpdated() > recentUpdate) {
                                     recentUpdate = pl.getLastUpdated();
                                 }
                                 Log.d("TAG","updating: " + pl.getName());
+                                getImageByPath(pl.getImage(), new GetImageListener() {
+                                    @Override
+                                    public void onSuccess(Bitmap image) {
+                                        modelSql.setPlayerPhoto(pl.getUniqueID(), image);
+                                    }
+
+                                    @Override
+                                    public void onFail() {
+
+                                    }
+                                });
                             }
                             modelSql.setPlayersLastUpdateDate(recentUpdate);
                         }
@@ -299,6 +309,31 @@ public class Model {
     public void getImageByPath(String profileUrl, GetImageListener listener)
     {
         modelFirebase.getImage(profileUrl, listener);
+    }
+
+    public void getPlayerProfile(final String playerID, final GetImageListener listener)
+    {
+        Bitmap localProfile = modelSql.getPlayerProfileFromLocal(playerID);
+        if (localProfile == null)
+        {
+            String remoteProfilePath = modelSql.getPlayerProfileRemotePath(playerID);
+            modelFirebase.getImage(remoteProfilePath, new GetImageListener() {
+                @Override
+                public void onSuccess(Bitmap image) {
+                    modelSql.setPlayerPhoto(playerID, image);
+                    listener.onSuccess(image);
+                }
+
+                @Override
+                public void onFail() {
+
+                }
+            });
+        }
+        else
+        {
+            listener.onSuccess(localProfile);
+        }
     }
 
     public void getPlayerNameAndProfile(String playerID, final GetPlayerNameAndProfile listener)
