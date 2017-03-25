@@ -57,35 +57,52 @@ public class PlayerSql {
 
         values.put(IMAGE_LOCAL_URL, profilePath);
 
-        int result = writableDatabase.update(PLAYERS, values, PL_ID + "=" + playerID, null);
+        int result = writableDatabase.updateWithOnConflict(PLAYERS, values, PL_ID + "=?", new String[]{playerID}, SQLiteDatabase.CONFLICT_REPLACE);
         if (result != 1)
         {
-            Log.d("TAG", "invalid return value in update playerProfilePath = " + result);
+            Log.d("TAG", "invalid return value in setPlayerProfileLocalPath = " + result);
+        }
+        else
+        {
+            Log.d("TAG", "setPlayerProfileLocalPath succeed. plId = " + playerID + " path = " + profilePath);
         }
     }
 
     public static String getPlayerProfileLocalPath(SQLiteDatabase readableDatabase, String playerID)
     {
+        String path = "";
         Cursor cursor = readableDatabase.query(PLAYERS, null,
-                PL_ID + " = " + playerID,
-                null , null, null, null);
+                PL_ID + "=?",
+                new String[]{playerID}, null, null, null);
         if (cursor.moveToFirst()) {
-            return cursor.getString(cursor.getColumnIndex(IMAGE_LOCAL_URL));
+            path = cursor.getString(cursor.getColumnIndex(IMAGE_LOCAL_URL));
+            Log.d("TAG", "getPlayerProfileLocalPath succeed. plId = " + playerID + " path = " + path);
         }
-        Log.d("TAG", "failed to get local path from local sql");
-        return "";
+        else
+        {
+            Log.d("TAG", "failed to get local path from local sql");
+        }
+        cursor.close();
+        return path;
     }
 
     public static String getPlayerProfileRemotePath(SQLiteDatabase readableDatabase, String playerID)
     {
+        String path = "";
         Cursor cursor = readableDatabase.query(PLAYERS, null,
-                PL_ID + " = " + playerID,
-                null , null, null, null);
+                PL_ID + "=?",
+                new String[]{playerID}, null, null, null);
         if (cursor.moveToFirst()) {
-            return cursor.getString(cursor.getColumnIndex(IMAGE_REMOTE_URL));
+            path = cursor.getString(cursor.getColumnIndex(IMAGE_REMOTE_URL));
+            Log.d("TAG", "getPlayerProfileRemotePath succeed. plId = " + playerID + " path = " + path);
         }
-        Log.d("TAG", "failed to get remote path from local sql");
-        return "";
+        else
+        {
+            Log.d("TAG", "failed to get remote path from local sql");
+        }
+        cursor.close();
+
+        return path;
     }
 
     public static List<Player> getAllPlayers(SQLiteDatabase readableDatabase)
@@ -107,7 +124,7 @@ public class PlayerSql {
                 allPlayers.add(newPl);
             }while(dbCursor.moveToNext());
         }
-
+        dbCursor.close();
         return allPlayers;
     }
 }

@@ -22,7 +22,7 @@ import java.util.List;
 
 public class ModelSql {
     private SQLiteOpenHelper helper;
-    private int version = 4;
+    private int version = 5;
 
     public ModelSql(){
         helper = new BrokenPicHelper(MyAppContext.getAppContext());
@@ -30,8 +30,7 @@ public class ModelSql {
 
     public double getPlayersLastUpdateDate()
     {
-        return 0;
-//        return PlayerSql.getLastUpdateDate(helper.getReadableDatabase());
+        return PlayerSql.getLastUpdateDate(helper.getReadableDatabase());
     }
 
     public void setPlayersLastUpdateDate(double recentUpdate){
@@ -76,10 +75,12 @@ public class ModelSql {
         return profileLocal;
     }
 
-    public boolean saveImageToSdCard(Bitmap bitmap, String path)
+    public boolean saveImageToSdCard(Bitmap bitmap, String filename)
     {
         File sdCardDirectory = Environment.getExternalStorageDirectory();
-        File image = new File(sdCardDirectory, path);
+        File dir = new File(sdCardDirectory.getAbsolutePath() + "/images");
+        dir.mkdirs();
+        File file = new File(dir, filename);
 
         boolean success = false;
 
@@ -87,7 +88,7 @@ public class ModelSql {
         FileOutputStream outStream;
         try {
 
-            outStream = new FileOutputStream(image);
+            outStream = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
         /* 100 to keep full quality of the image */
 
@@ -109,13 +110,13 @@ public class ModelSql {
         return success;
     }
 
-    public Bitmap getImageFromSdCard(String path)
+    public Bitmap getImageFromSdCard(String filename)
     {
-        File f = new File(Environment.getExternalStorageDirectory() + path);
+        File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/images/" + filename);
 
         if (f == null)
         {
-            Log.d("TAG", "failed to open local file: " + Environment.getExternalStorageDirectory() + path);
+            Log.d("TAG", "failed to open local file: " + Environment.getExternalStorageDirectory().getAbsolutePath() + "/images/" + filename);
         }
         Bitmap bmp = BitmapFactory.decodeFile(f.getAbsolutePath());
 
@@ -137,6 +138,7 @@ public class ModelSql {
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            Log.d("TAG", "ModelSql version upgraded. old = " + oldVersion + ", new = " + newVersion);
             PlayerSql.dropTable(db);
             LastUpdateSql.dropTable(db);
 
