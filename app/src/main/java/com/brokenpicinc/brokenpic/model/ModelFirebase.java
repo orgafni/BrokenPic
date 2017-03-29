@@ -127,10 +127,7 @@ public class ModelFirebase {
                     Player pl = plSnapshot.getValue(Player.class);
                     pl.setUniqueID(plSnapshot.getKey());
                     Log.d(TAG, pl.getName() + " - " + pl.getImage());
-                    if (!pl.getUniqueID().equals(currentUser.getUid()))
-                    {
-                        plList.add(pl);
-                    }
+                    plList.add(pl);
                 }
                 Log.d("TAG", "addListenerForSingleValueEvent:before  listener.onResult(plList);");
 

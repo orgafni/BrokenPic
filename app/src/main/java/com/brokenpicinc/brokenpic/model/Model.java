@@ -134,8 +134,8 @@ public class Model {
                         }
 
                         //return the complete players list to the caller
-                        modelSql.getAllPlayers();
                         List<Player> res =  modelSql.getAllPlayers();
+                        removeMeFromPlayersList(res);
                         Log.d("TAG", "local all players size = " + res.size());
                         listener.onResult(res);
                     }
@@ -495,6 +495,24 @@ public class Model {
             });
 
             isLoaded = true;
+        }
+    }
+
+    public void removeMeFromPlayersList(List<Player> players)
+    {
+        Player pToRemove = null;
+        for (Player p : players
+             ) {
+            if (p.getUniqueID().equals(modelFirebase.getCurrentUserID()))
+            {
+                pToRemove = p;
+                break;
+            }
+        }
+
+        if (pToRemove != null)
+        {
+            players.remove(pToRemove);
         }
     }
 }

@@ -23,7 +23,7 @@ import java.util.List;
 
 public class ModelSql {
     private SQLiteOpenHelper helper;
-    private int version = 5;
+    private int version = 6;
 
     public ModelSql(){
         helper = new BrokenPicHelper(MyAppContext.getAppContext());
