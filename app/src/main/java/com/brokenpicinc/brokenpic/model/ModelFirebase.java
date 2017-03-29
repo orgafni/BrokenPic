@@ -103,6 +103,11 @@ public class ModelFirebase {
                     listener.onSuccess();
                 }
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "signInWithEmail:onFailure:" + e.getMessage());
+            }
         });
         Log.d("TAG", "after signin");
     }

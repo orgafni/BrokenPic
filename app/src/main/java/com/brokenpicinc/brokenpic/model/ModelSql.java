@@ -1,6 +1,7 @@
 package com.brokenpicinc.brokenpic.model;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
@@ -77,18 +78,32 @@ public class ModelSql {
 
     public boolean saveImageToSdCard(Bitmap bitmap, String filename)
     {
-        File sdCardDirectory = Environment.getExternalStorageDirectory();
-        File dir = new File(sdCardDirectory.getAbsolutePath() + "/images");
-        dir.mkdirs();
-        File file = new File(dir, filename);
+//        File sdCardDirectory = Environment.getExternalStorageDirectory();
+////        File sdCardDirectory = new File("/mnt");
+//
+//        File dir = new File(sdCardDirectory.getAbsolutePath() + "/images");
+//        if (!dir.exists())
+//        {
+//            if (!dir.mkdirs())
+//            {
+//                Log.d("TAG", "failed to create dirs. path = " + dir.getAbsolutePath());
+//            }
+//        }
+//        File file = new File(dir, filename);
+        ContextWrapper cw = new ContextWrapper(MyAppContext.getAppContext());
+        File directory = cw.getDir("images", Context.MODE_PRIVATE);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        File mypath = new File(directory, filename);
+
 
         boolean success = false;
 
         // Encode the file as a PNG image.
         FileOutputStream outStream;
         try {
-
-            outStream = new FileOutputStream(file);
+            outStream = new FileOutputStream(mypath);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
         /* 100 to keep full quality of the image */
 
@@ -112,11 +127,18 @@ public class ModelSql {
 
     public Bitmap getImageFromSdCard(String filename)
     {
-        File f = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/images/" + filename);
+        ContextWrapper cw = new ContextWrapper(MyAppContext.getAppContext());
+        File directory = cw.getDir("images", Context.MODE_PRIVATE);
+        if (directory == null)
+        {
+            Log.d("TAG", "failed to open local directory: " + directory.getAbsolutePath());
+        }
+
+        File f = new File(directory, filename);
 
         if (f == null)
         {
-            Log.d("TAG", "failed to open local file: " + Environment.getExternalStorageDirectory().getAbsolutePath() + "/images/" + filename);
+            Log.d("TAG", "failed to open local file: " + f.getAbsolutePath());
         }
         Bitmap bmp = BitmapFactory.decodeFile(f.getAbsolutePath());
 
