@@ -122,7 +122,7 @@ public class Model {
 
                                     @Override
                                     public void onFail() {
-
+                                        Log.d("TAG", "failed to getImageByPath");
                                     }
                                 });
                             }
@@ -206,6 +206,7 @@ public class Model {
                         }
                         @Override
                         public void onFail() {
+                            Log.d("TAG", "failed to getPlayerInGameByIndex");
                         }
                     });
                 }
@@ -238,14 +239,14 @@ public class Model {
 
                         @Override
                         public void onFail() {
-
+                            Log.d("TAG", "failed to getGameByGameId");
                         }
                     });
                 }
             }
             @Override
             public void onFail() {
-
+                Log.d("TAG", "failed to getPlayersAmountInGame");
             }
         });
         // TODO: if this is the last turn of the game, register this game in the finishedGames of all the players that took part in this game.
@@ -272,7 +273,7 @@ public class Model {
 
             @Override
             public void onFail() {
-
+                Log.d("TAG", "failed to getPlayerInGameByIndex");
             }
         });
 
@@ -326,7 +327,7 @@ public class Model {
 
                 @Override
                 public void onFail() {
-
+                    Log.d("TAG", "failed to getImage from firebase. ");
                 }
             });
         }
@@ -349,14 +350,14 @@ public class Model {
 
                     @Override
                     public void onFail() {
-
+                        Log.d("TAG", "failed to getImage from firebase. ");
                     }
                 });
             }
 
             @Override
             public void onCancel(String msg) {
-
+                Log.d("TAG", "failed to getPlayerDetailsByPlayerID from firebase. ");
             }
         });
 
@@ -381,21 +382,25 @@ public class Model {
 
                                             @Override
                                             public void onFail() {
+                                                Log.d("TAG", "failed to getImage from firebase");
                                             }
                                         });
                                     }
                                     @Override
                                     public void onCancel(String msg) {
+                                        Log.d("TAG", "failed to getPlayerDetailsByPlayerID from firebase. msg: " + msg);
                                     }
                                 });
                             }
                             @Override
                             public void onFail() {
+                                Log.d("TAG", "failed to getPlayerInGameByIndex from firebase. ");
                             }
                         });
                     }
                     @Override
                     public void onFail() {
+                        Log.d("TAG", "failed to getGameTurnIndex from firebase. ");
                     }
                 }
         );
@@ -423,7 +428,7 @@ public class Model {
 
                                                     @Override
                                                     public void onFail() {
-
+                                                        Log.d("TAG", "failed to getImage from firebase. ");
                                                     }
                                                 });
 
@@ -431,21 +436,25 @@ public class Model {
 
                                             @Override
                                             public void onFail() {
+                                                Log.d("TAG", "failed to getImage from firebase. ");
                                             }
                                         });
                                     }
                                     @Override
                                     public void onCancel(String msg) {
+                                        Log.d("TAG", "failed to getPlayerDetailsByPlayerID from firebase. msg: " + msg);
                                     }
                                 });
                             }
                             @Override
                             public void onFail() {
+                                Log.d("TAG", "failed to getPlayerInGameByIndex from firebase.");
                             }
                         });
                     }
                     @Override
                     public void onFail() {
+                        Log.d("TAG", "failed to getGameTurnIndex from firebase.");
                     }
                 }
         );
@@ -472,7 +481,7 @@ public class Model {
 
             @Override
             public void onFail() {
-
+                Log.d("TAG", "failed to getGameByGameId from firebase. ");
             }
         });
 

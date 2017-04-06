@@ -20,6 +20,7 @@ import com.brokenpicinc.brokenpic.model.Model;
 import com.brokenpicinc.brokenpic.model.ModelFirebase;
 import com.brokenpicinc.brokenpic.model.Player;
 import com.brokenpicinc.brokenpic.model.PlayerInFinishedGame;
+import com.brokenpicinc.brokenpic.utils.DialogInterrupter;
 
 import org.w3c.dom.Text;
 
@@ -111,7 +112,7 @@ public class FinishedGameFlowFragment extends Fragment {
                     }
                     @Override
                     public void onFail() {
-
+                        DialogInterrupter.showNeturalDialog("failed to get image from DB", getActivity());
                     }
                 });
             }

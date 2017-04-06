@@ -143,7 +143,7 @@ public class StartNewGameFragment extends Fragment {
 
                 @Override
                 public void onFail() {
-
+                    DialogInterrupter.showNeturalDialog("failed to get player profile from DB", getActivity());
                 }
             });
 
